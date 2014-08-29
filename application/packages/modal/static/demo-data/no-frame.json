@@ -1,0 +1,6 @@
+{
+    "frame":null,
+    "src":"http://localhost:8081/index.php/apps/contacts/add_contact/single_form",
+    "wrapper_id": "div_app_ifr_modal",
+    "iframe_id": "ifr_app_modal"
+}

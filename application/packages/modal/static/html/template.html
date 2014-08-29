@@ -1,0 +1,16 @@
+<div class="wrapper-popup-mask {{wrapper_class}}" id="{{wrapper_id}}">
+    <div class="wrapper-align-center popup-warrper" style="display: block !important">
+        {{#frame}}
+        <div class="wrapper-inside-popup-{{width}}px" style="width:{{width}}px;">
+            <span class="iconsp-1221-12px btn-close-iframe close-modal"></span>
+            <h4 class="titles-{{title-style}}">{{title}}</h4>
+            <section class="popup-content" style="height:{{height}}px">
+                <!--Content goes here-->
+                {{/frame}}
+                <iframe src="{{src}}" id="{{iframe_id}}">
+                {{#frame}}
+            </section>
+        </div>
+        {{/frame}}
+    </div>
+</div>

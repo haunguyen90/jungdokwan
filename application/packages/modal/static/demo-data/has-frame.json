@@ -1,0 +1,11 @@
+{
+    "frame": [
+        {
+            "width": "1100",
+            "height": "400",
+            "title": "List opportunity",
+            "title-style": "green-medium"
+        }
+    ],
+    "src": "http://localhost:8081/index.php/apps/opportunities#vertOpportunity"
+}

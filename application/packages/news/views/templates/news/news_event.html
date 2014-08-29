@@ -1,0 +1,175 @@
+<script id="template-newsEvent-mainview" type="text/html">
+    {literal}
+<div class="row" >
+    <div id="news_content" class="news_event col-md-8">
+        <h3 class="title"><span>TIN TỨC & SỰ KIỆN</span></h3>
+        {{#newsEvent}}
+        {{#attributes}}
+        <article>
+            <div class="news_post">
+                <h5 data-action="detail" data-post="{{id}}">{{post_title_vi}}</h5>
+                <span class="bg_icon"><span class="icon-{{news_type}}"></span></span>
+                <img data-action="detail" data-post="{{id}}" src="/static/img/{{image}}" alt="" />
+                <p>{{description_vi}}...</p>
+                <a class="read_more" href="#">Read More</a>
+                <ul class="list_icon clearfix"> 
+                    <li>
+                        <span class="icon-clock"></span><br />
+                        <span>{{post_date}}</span>
+                    </li>
+                    <li>
+                        <span class="icon-user"></span><br />
+                        <span>M-Elgendy</span>
+                    </li>
+                    <li>
+                        <span class="icon-heart"></span><br />
+                        <span>1205</span>
+                    </li>
+                    <li>
+                        <span class="icon-bubble"></span><br />
+                        <span>1205</span>
+                    </li>
+                </ul>
+            </div>
+        </article>
+        {{/attributes}}
+        {{/newsEvent}}
+        
+        <ul class="pagination">
+            {{#paging}}
+            {{#prev}}
+            <li class="disabled prev"><a {{href}}>Prev</a></li>
+            {{/prev}}
+            {{/paging}}
+            {{#paging}}
+            <li class="{{active}}"><a {{href}}>{{page}}</a></li>
+            {{/paging}}
+            {{#paging}}
+            {{#next}}
+            <li class="next"><a {{href}}>Next</a></li>
+            {{/next}}
+            {{/paging}}
+        </ul>
+    </div>	
+    <aside id="news-righ-aside">
+        
+    </aside>
+
+</div>
+    {/literal}
+</script>
+<script id="template-newsRightAside" type="text/html">
+    {literal}
+    <div class="category col-md-4">
+            <h3 class="title"><span>DANH MỤC</span></h3>
+            <ul class="list_cate">
+                {{#postCat}}
+                {{#attributes}}
+                <li><a > > {{name_vi}}</a></li>
+                {{/attributes}}
+                {{/postCat}}
+            </ul>
+            <div class="recent">
+                <h6>RECENT POSTS</h6>
+                <ul class="list_recent">
+                    {{#recentPosts}}
+                    {{#attributes}}
+                    <li class="clearfix">
+                        <div class="left">
+                            <span class="arrow">></span>
+                        </div>
+                        <div class="right">
+                            <a href="#">{{post_title_vi}}</a><br>
+                            <span class="time">{{post_date}}</span>
+                        </div>
+                    </li>
+                    {{/attributes}}
+                    {{/recentPosts}}
+                </ul>
+            </div>
+            <div class="opening">
+                <h4>Opening <strong>Hours</strong></h4>
+                <ul>
+                    <li>
+                        <span class="glyphicon glyphicon-calendar"></span>
+                        <span class="day">Monday</span>
+                        <span class="hour">h. 6:00 - h. 24:00</span>
+                    </li>
+                    <li>
+                        <span class="glyphicon glyphicon-calendar"></span>
+                        <span class="day">Tuesday</span>
+                        <span class="hour">h. 6:00 - h. 24:00</span>
+                    </li>
+                    <li>
+                        <span class="glyphicon glyphicon-calendar"></span><span class="day">Wednesday</span><span class="hour">h. 6:00 - h. 24:00</span>
+                    </li>
+                    <li>
+                        <span class="glyphicon glyphicon-calendar"></span>
+                        <span class="day">Thursday</span>
+                        <span class="hour">h. 6:00 - h. 24:00</span>
+                    </li>
+                    <li>
+                        <span class="glyphicon glyphicon-calendar"></span>
+                        <span class="day">Friday </span>
+                        <span class="hour">h. 6:00 - h. 24:00</span>
+                    </li>
+                    <li>
+                        <span class="glyphicon glyphicon-calendar"></span>
+                        <span class="day">Saturday</span>
+                        <span class="hour">h. 6:00 - h. 24:00</span>
+                    </li>
+                    <li>
+                        <span class="glyphicon glyphicon-calendar"></span>
+                        <span class="day">Sunday</span>
+                        <span class="hour">h. 6:00 - h. 24:00</span>
+                    </li>
+                </ul>
+                <p>Nam vestibulum, arcu sodales feugiat consectetur, nisl orci bibendum elit.</p>
+                <p class="enjoy">Enjoy it !</p>
+            </div>
+            <div class="check">
+                <h2>CHECK POOM/DAN</h2>
+                <form class="form_check">
+                    <label class="name">
+                        <select class="slt-name">
+                            <option>ENGLISH NAME</option>
+                            <option>VIETNAMES NAME</option>
+                        </select>
+                        <input type="text" name="" value="">
+                    </label>
+                    <label class="nationality">
+                        <span>NATIONALITY</span>
+                        <input type="text" name="" value="">
+                    </label>
+                    <label class="birdthday">
+                        <span>BIRDTHDAY</span>
+                        <div class="day">
+                            <input type="text" name="" value="DD">
+                            <input type="text" name="" value="MM">
+                            <input type="text" name="" value="YYYY">
+                        </div>
+                    </label>
+                    <input class="submit" type="submit" value="inquiry">
+                </form>
+            </div>
+            <div class="tags clearfix">
+                <h6>TAGS</h6>
+                <ul>
+                    {{#tags}}
+                    {{#.}}
+                    <li><a href="#">{{.}}</a></li>
+                    {{/.}}
+                    {{/tags}}
+                </ul>
+            </div>
+            <div class="archive clearfix">
+                <h6>ARCHIVE</h6>
+                <ul>
+                    <li><a href="#">&lt; 2013</a></li>
+                    <li><a href="#">&lt; 2012</a></li>
+                    <li><a href="#">&lt; 2011</a></li>
+                </ul>
+            </div>
+        </div>
+{/literal}
+</script>

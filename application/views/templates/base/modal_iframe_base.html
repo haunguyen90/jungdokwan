@@ -1,0 +1,27 @@
+{extends file="base/basic.html"}
+
+{block name="body"}
+{/block}
+
+{block name="body_scripts" append}
+    <script src="{asset_url()}third_party/jquery/jquery.ba-postmessage.min.js"></script>
+    <script src="{asset_url()}theme/js/bootstrap.min.js"></script>
+    <script src="{asset_url()}apps/js/modal.js"></script>
+    {*
+    <script>
+        $(function () {
+            ModalApi.modalResult(function (data, message) {
+                switch (data.result.toLowerCase()) {
+                    case 'cancel':
+                    case 'save':
+                    default:
+                        ModalApi.modelClose();
+                        break;
+                }
+                console.log('data: ', data);
+            });
+            setTimeout(ModalApi.modelClose, 1500);
+        });
+    </script>
+    *}
+{/block}

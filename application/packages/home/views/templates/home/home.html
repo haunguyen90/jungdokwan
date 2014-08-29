@@ -1,0 +1,183 @@
+<script id="template-home-mainview" type="text/html">
+{literal}
+<div class="welcome">
+    <h3 class="title"><span>WELCOME </span></h3>
+    <div class="row">
+        {{#highlightNews}}
+        {{#attributes}}
+        <div class="col-lg-4 col-sm-6">
+            <figure>
+                <a class="img-link" href="#"><img src="/static/img/{{image}}" alt="Jung Do Kwan" /></a></figure>
+            <figcaption>
+                <h4><a href="#">{{post_title_vi}}</a></h4>
+                <p>{{description_vi}}</p>
+            </figcaption>
+        </div>
+        {{/attributes}}
+        {{/highlightNews}}
+    </div><!--End row-->
+</div><!--End welcome-->
+
+<div class="row">
+    <div class="news col-md-8">
+        <h3 class="title"><span>Tin tức hoạt động</span></h3>
+        {{#newestNews}}
+        <article class="news_main row">
+            <figure class="col-lg-6 col-sm-6"><a class="img-link"><img src="/static/img/{{image}}" alt="Jung Do Kwan" /></a></figure>
+            <figcaption class="col-lg-6 col-sm-6">
+                <h4><a href="#">{{post_title_vi}}</a></h4>
+                <p>{{description_vi}}</p>
+            </figcaption>
+        </article><!--End tin tuc chinh -->
+        {{/newestNews}}
+        <div class="list-news row">
+            <ul class="nav col-md-6">
+                {{#newsCat}}
+                {{#attributes}}
+                <li><a href="#">{{name_vi}}</a></li>
+                {{/attributes}}
+                {{/newsCat}}
+            </ul>
+            <ul class="nav col-md-6">
+                <li><a href="#">Vestibulum ante ipsum primis</a></li>
+                <li><a href="#">In faucibus orci luctus et</a></li>
+                <li><a href="#">Ultrices posuere cubilia Curae</a></li>
+                <li><a href="#">Suspendisse sollicitudin velit sed leo</a></li>
+                <li><a href="#">Ut pharetra augue nec augue</a></li>
+                <li><a href="#">Nam elit agna,endrerit sit amet</a></li>
+            </ul>
+        </div><!--End Tin tuc khac -->
+    </div><!--End tin tuc hoat dong -->
+    <div class="students col-md-4">
+        <h3 class="title"><span>Học viên</span></h3>
+        <ul class="nav">
+            <li><a href="#">&gt; Đăng ký</a></li>
+            <li><a href="#">&gt; Lịch luyện tập</a></li>
+            <li><a href="#">&gt; Thông tin học phí</a></li>
+            <li><a href="#">&gt; Thông tin tài khoản</a></li>
+        </ul>
+        <div class="check">
+            <h2>CHECK POOM/DAN</h2>
+            <form class="form_check">
+                <label class="name">
+                    <select class="slt-name">
+                        <option>ENGLISH NAME</option>
+                        <option>VIETNAMES NAME</option>
+                    </select>
+                    <input type="text" name="" value="" />
+                </label>
+                <label class="nationality">
+                    <span>NATIONALITY</span>
+                    <input type="text" name="" value=""/>
+                </label>
+                <label class="birdthday">
+                    <span>BIRDTHDAY</span>
+                    <div class="day">
+                        <input type="text" name="" value="DD" />
+                        <input type="text" name="" value="MM" />
+                        <input type="text" name="" value="YYYY" />
+                    </div>
+                </label>
+                <input class="submit" type="submit" value="inquiry" />
+            </form>
+        </div>
+    </div><!--End học viên -->
+</div><!--End row -->
+<div class="row">
+    <div class="col-md-4 trainer">
+        <h4 class="text-center">HUẤN LUYỆN VIÊN</h4>
+        <div id="trainer_slide" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+                {{#coachs}}
+                
+                <div class="item {{active}}">
+                    {{#coach_1}}
+                    {{#attributes}}
+                    <div class="col-md-6 col-sm-6 text-center">
+                        <figure>
+                            <img class="image" src="/static/img/{{image}}" alt="Kimg Jung Sik" />
+                        </figure>
+                        <figcaption>
+                            <p class="name">{{first_name}} {{last_name}}</p>
+                            <span class="level">{{id_pom_dan}}</span>
+                            <p>{{position_vi}}</p>
+                            <ul class="nav navbar-nav">
+                                <li><a href="#"><span class="glyphicon glyphicon-heart"></span></a></li>
+                                <li><a href="#"><span class="icon-thumbs-o-up"></span></a></li>
+                            </ul>
+                            <ul class="nav navbar-nav navbar-right">
+                                <li><a href="#"><span class="icon-facebook">{{facebook}}</span></a></li>
+                                <li><a href="#"><span class="icon-twitter">{{twitter}}</span></a></li>
+                            </ul>
+                        </figcaption>
+                    </div>
+                    {{/attributes}}
+                   {{/coach_1}}
+                    {{#coach_2}}
+                    {{#attributes}}
+                    <div class="col-md-6 col-sm-6 text-center right">
+                        <figure>
+                            <img class="image" src="/static/img/{{image}}" alt="Kimg Jung Sik" />
+                        </figure>
+                        <figcaption>
+                            <p class="name">{{first_name}} {{last_name}}</p>
+                            <span class="level">{{id_pom_dan}}</span>
+                            <p>{{position_vi}}</p>
+                            <ul class="nav navbar-nav">
+                                <li><a href="#"><span class="glyphicon glyphicon-heart"></span></a></li>
+                                <li><a href="#"><span class="icon-thumbs-o-up"></span></a></li>
+                            </ul>
+                            <ul class="nav navbar-nav navbar-right">
+                                <li><a href="#"><span class="icon-facebook">{{facebook}}</span></a></li>
+                                <li><a href="#"><span class="icon-twitter">{{twitter}}</span></a></li>
+                            </ul>
+                        </figcaption>
+                    </div>
+                    {{/attributes}}
+                    {{/coach_2}}
+                </div>
+                 
+                {{/coachs}}							
+            </div>
+            <a class="left carousel-control" href="#trainer_slide" data-slide="prev">
+                <span class="icon-prev"></span>
+            </a>
+            <a class="right carousel-control" href="#trainer_slide" data-slide="next">
+                <span class="icon-next"></span>
+            </a>
+        </div><!--End gallery -->
+    </div><!--End Huấn luyện viên-->
+    <div class="col-md-4 events">
+        <h4 class="text-center">SỰ KIỆN</h4>
+        <section class="section">
+            <div class="image pull-left">
+                <p class="time">26 Gen, 2014</p>
+                <img src="/static/img/img-event.jpg" />
+            </div>
+            <div class="text pull-left">
+                <p class="hour">h.12.00 - h.13.00</p>
+                <h6>GIẢI ĐẤU I</h6>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+                <a  href="#"  class="booking">BOOKING</a>
+            </div>
+        </section>
+        <section class="section">
+            <div class="image pull-left">
+                <p class="time">26 Gen, 2014</p>
+                <img src="/static/img/img-event.jpg" />
+            </div>
+            <div class="text pull-left">
+                <p class="hour">h.12.00 - h.13.00</p>
+                <h6>GIẢI ĐẤU I</h6>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+                <a href="#" class="booking">BOOKING</a>
+            </div>
+        </section>
+    </div><!--End sự kiện-->
+    <div class="col-md-4 fb_area">
+        <h4 class="text-center">FACEBOOK</h4>
+        <img src="/static/img/fb.png" />
+    </div><!-- End fb_area-->
+</div>
+{/literal}
+</script>

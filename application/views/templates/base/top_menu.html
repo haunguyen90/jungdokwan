@@ -1,0 +1,25 @@
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="brand" href="#">AF App</a>
+            {block name="top_nav"}
+            <ul class="nav nav-pills">
+                {block name="top_nav_pills"}
+                <li class="active"><a href="{site_url('home')}">Home</a></li>
+                {/block}
+            </ul>
+            <ul class="nav nav-pills pull-right">
+                {block name="top_nav_pills"}
+                {if isset($session.user_id)}
+                <li><a href="{site_url('account')}">Account</a></li>
+                <li><a href="{site_url('login/logout')}">Logout</a></li>
+                {else}
+                <li><a href="{site_url('login')}">Login</a></li>
+                {/if}
+                {/block}
+            </ul>
+            {/block}
+        </div>
+    </div>
+</div>
+

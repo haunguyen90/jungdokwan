@@ -1,0 +1,42 @@
+## EXPIRES CACHING ##
+<IfModule mod_expires.c>
+ExpiresActive On
+ExpiresByType image/jpg "access plus 1 second"
+ExpiresByType image/jpeg "access plus 1 second"
+ExpiresByType image/gif "access plus 1 second"
+ExpiresByType image/png "access plus 1 second"
+ExpiresByType text/css "access plus 1 month"
+ExpiresByType application/pdf "access plus 1 month"
+ExpiresByType text/x-javascript "access plus 1 second"
+ExpiresByType application/javascript "access plus 1 month"
+ExpiresByType text/javascript "access plus 1 second"
+ExpiresByType application/x-shockwave-flash "access plus 1 month"
+ExpiresByType image/x-icon "access plus 1 second"
+ 
+  <IfModule mod_headers.c>
+    Header append Cache-Control "public"
+  </IfModule>
+ 
+</IfModule>
+## EXPIRES CACHING ##
+<IfModule mod_headers.c>
+    # 1 YEAR
+    <FilesMatch "\.(ico|pdf|flv)$">
+    Header set Cache-Control "max-age=29030400, public"
+    </FilesMatch>    
+    # 1 WEEK
+    <FilesMatch "\.(txt|css|js)$">
+    Header set Cache-Control "max-age=604800, proxy-revalidate"
+    </FilesMatch>    
+</IfModule>
+
+# compress text, javascript, css, xml:
+AddOutputFilterByType DEFLATE text/plain
+AddOutputFilterByType DEFLATE text/xml
+AddOutputFilterByType DEFLATE text/css
+AddOutputFilterByType DEFLATE application/xml
+AddOutputFilterByType DEFLATE application/xhtml+xml
+AddOutputFilterByType DEFLATE application/rss+xml
+AddOutputFilterByType DEFLATE application/javascript
+AddOutputFilterByType DEFLATE application/x-javascript
+AddOutputFilterByType DEFLATE application/json

@@ -1,0 +1,22 @@
+<script id="template-galley-mainview" type="text/html">
+    {literal}
+<div class="main container gallery_page">
+    <h3 class="title"><span>HÌNH ẢNH</span></h3>
+    <ul class="row list_picture">
+        {{#album}}
+        {{#attributes}}
+        <li class="col-lg-4 col-sm-6">
+            <figure>
+                <a class="img-link cu-hand" data-action="detail" data-post="{{id}}" ><img src="/static/img/{{image}}" alt="Jung Do Kwan" /></a>
+            </figure>
+        <figcaption>
+            <h4><a href="#" data-action="detail" data-post="{{id}}">{{post_title_vi}}</a></h4>
+            <p>{{description_vi}}</p>
+        </figcaption>
+        </li>
+        {{/attributes}}
+        {{/album}}
+    </ul><!--End row-->
+</div><!--End main-->
+{/literal}
+</script>

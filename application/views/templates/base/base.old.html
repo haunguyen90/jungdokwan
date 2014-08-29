@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+{include file="base/head.html"}
+<body class='{block name="body_css_class"}{/block}' >
+    {block name="body_scripts"}
+    <script>
+        "use strict";
+        window['af'] = {
+            rootUri: '{site_url()}',
+            myUserId: '{if $user AND $user->id}{$user->id}{else}-1{/if}',
+            myAccountId: '{if $user AND $user->account_id}{$user->account_id}{else}-1{/if}',
+        };
+    </script>
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->    
+    <script src="/static/js/jquery.carouFredSel-6.2.0.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.ba-postmessage.js"></script>
+    {*
+    {*
+    <script type="text/javascript" src="/static/third_party/jquery/jquery.ba-dotimeout.js"></script>
+    <script type="text/javascript" src="/static/core/js/app_api.js"></script>
+    <script type="text/javascript" src="/static/core/js/statusslider.js"></script>
+    *}
+    <script src="/static/apps/account/js/account.js"></script>
+    <script type="text/javascript" src="/static/apps/fuplanner/js/fuplanner.js"></script>
+
+    {/block}
+    <div id="" class="wrapper-main">
+        {block name="body_main"}{/block}
+        <div id="push"></div>
+    </div><!-- end #wrap -->
+
+    <!-- body_post_main -->
+    {block name="body_post_main"}{/block}
+    {include file="base/footer_menu.html"}
+
+</body>
+</html>

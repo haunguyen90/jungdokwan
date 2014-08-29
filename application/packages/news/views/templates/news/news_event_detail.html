@@ -1,0 +1,122 @@
+<script id="template-newsEventDetail-mainview" type="text/html">
+    {literal}
+    <div class="row" >
+        <div class="news_active col-md-8">
+            <h3 class="title"><span>TIN TỨC &amp; SỰ KIỆN &gt; Tin tức hoạt động</span></h3>
+            <div class="content_news_active">
+                <article class="article">
+                    <h5>{{news.post_title_vi}}</h5>
+                    <ul class="list_icon clearfix"> 
+                        <li>
+                            <span class="icon-clock"></span><span>{{news.post_date}}</span>
+                        </li>
+                        <li>
+                            <span class="icon-user"></span><span>M-Elgendy</span>
+                        </li>
+                        <li>
+                            <span class="icon-heart"></span><span>1205</span>
+                        </li>
+                        <li>
+                            <span class="icon-bubble"></span><span>1205</span>
+                        </li>
+                    </ul>
+                    <img src="/static/img/{{news.image}}" alt="" />
+                    <div class="text">
+                        <p>{{news.post_content_vi}}</p>
+                    </div>
+
+                </article>
+                <div class="tools clearfix">
+                    <ul class="list_socials">
+                        <li class="sh"><a href="#">SHARE</a></li>
+                        <li class="fb"><a href="#"><span class="icon-facebook"></span></a></li>
+                        <li class="tw"><a href="#"><span class="icon-twitter"></span></a></li>
+                        <li class="gg"><a href="#"><span class="icon-googleplus"></span></a></li>
+                        <li class="in"><a href="#"><span class="icon-linkedin"></span></a></li>
+                    </ul>
+                    <ul class="controls">
+                        <li class="prev"><a href="#"><span class="icon-next"></span></a></li>
+                        <li class="next active"><a href="#"><span class="icon-prev"></span></a></li>
+                    </ul>
+                </div>
+                <div class="cmt_are">
+                    <h5>10 Comments</h5>
+                    <ul class="list_cmt">							
+                        <li class="clearfix">
+                            <div class="pull-left">
+                                <span class="name">Matt Dill</span>
+                                <img src="/static/img/avatar.png" alt="avatar" />
+                            </div>
+                            <div class="pull-right">
+                                <div class="clearfix"><span class="time">26 June 2013, 15:20</span><a class="reply" href="#"><span class="icon-ccw"></span>REPLY</a></div>
+                                <p>Duis dapibus aliquam mi, eget euismod sem scelerisque ut. Vivamus at elit quis urna adipiscing iaculis. Curabiturt in neque dictum blandit. Proin in iaculis neque. </p>
+                            </div>
+                            <ul class="clearfix">
+                                <li class="clearfix">
+                                    <div class="pull-left">
+                                        <span class="name">Matt Dill</span>
+                                        <img src="/static/img/avatar.png" alt="avatar" />
+                                    </div>
+                                    <div class="pull-right">
+                                        <div class="clearfix"><span class="time">26 June 2013, 15:20</span></div>
+                                        <p>Duis dapibus aliquam mi, eget euismod sem scelerisque ut. Vivamus at elit quis urna adipiscing iaculis. Curabitur vitae velit in neque dictum blandit. Proin in iaculis neque. </p>
+                                    </div>				
+                                </li>
+                            </ul>
+                        <li class="clearfix">
+                            <div class="pull-left">
+                                <span class="name">Matt Dill</span>
+                                <img src="/static/img/avatar.png" alt="avatar" />
+                            </div>
+                            <div class="pull-right">
+                                <div class="clearfix"><span class="time">26 June 2013, 15:20</span><a class="reply" href="#"><span class="icon-ccw"></span>REPLY</a></div>
+                                <p>Duis dapibus aliquam mi, eget euismod sem scelerisque ut. Vivamus at elit quis urna adipiscing iaculis. Curabiturt in neque dictum blandit. Proin in iaculis neque. </p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="leave_cmt">
+                    <h5>Leave a comment</h5>
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="inputName" >
+                            </div>
+                            <label for="inputName" class="col-sm-2 control-label">Name</label>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="inputEmail" >
+                            </div>
+                            <label for="inputEmail" class="col-sm-2 control-label">E-mail</label>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="inputWebsite" >
+                            </div>
+                            <label for="inputEmail" class="col-sm-2 control-label">Web site</label>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-8">
+                                <textarea class="" id="inputCmt"></textarea>
+                            </div> 
+                            <label for="inputCmt" class="col-sm-2 control-label">Comment</label>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-10">
+                                <button type="submit" class="btn btn-default">SEND</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>	
+        <aside id="news-righ-aside">
+            
+        </aside>
+
+    </div>
+
+{/literal}
+</script>

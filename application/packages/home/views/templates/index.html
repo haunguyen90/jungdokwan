@@ -1,0 +1,24 @@
+{extends file="base/base.html"}
+{block name="body_main" append}
+{include file="home/home.html"}
+{/block}
+
+{block name="body_outside_main"}
+<div id="slide_show" class="show">
+
+</div><!--End show-->
+{/block}
+{block name="body_post_main"}
+<script src="/static/js/home/home.js"></script>
+<script src="/static/js/jquery.fancybox.pack.js"></script>
+{/block}
+{block name="body_scripts"}
+{include file="home/home.html"}
+{include file="about/about.html"}
+{include file="news/news_event.html"}
+{include file="news/news_event_detail.html"}
+{include file="gallery/gallery.html"}
+{include file="gallery/details/item.html"}
+{include file="contact/contact.html"}
+{include file="home/slide_show.html"}
+{/block}

@@ -1,0 +1,41 @@
+<?php
+class Template_humanized_model extends MY_Model {
+    protected $table_name = 'template_humanized';
+    
+    public function loadHumanizedTemp($id)
+    {
+        $this->CI->db->where('tt_id',$id);
+        $this->CI->db->where('account_id',$this->session->userdata('account_id'));
+        $this->CI->db->where('user_id',$this->session->userdata('user_id'));
+        $result = $this->CI->db->get($this->table_name);
+        $data_resutl = $result->result_array();
+        return $data_resutl;
+    }
+    
+    public function loadPreivewHumanizedTemp($id,$tt_id)
+    {
+        $this->CI->db->where('id',$id);
+        $this->CI->db->where('tt_id',$tt_id);
+        $result = $this->CI->db->get($this->table_name);
+        $data_result = $result->row_array();
+        return $data_result;
+    }
+    public function loadUserbyID($id)
+    {
+        $this->CI->db->where('user.id',$id);
+        $this->CI->db->join('user','contacts.user_id=user.id');
+        $result = $this->CI->db->get('contacts');
+        $data_result = $result->row_array();
+        return $data_result;
+    }
+    public function getTempHumanById($id)
+    {
+        $this->CI->db->where('id',$id);
+        $result = $this->CI->db->get($this->table_name);
+        return $result->row_array();
+    }
+    
+   
+      
+}
+?>

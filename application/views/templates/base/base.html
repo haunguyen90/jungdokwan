@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+        <title>Jung Do Kwan Việt Nam</title>
+        {block name="base_head"}{/block}
+        {include file="base/head.html"}
+        {block name="app_head"}{/block}
+    </head>
+    <body>  
+        {block name="body_scripts"}{/block}
+        {include file="base/header.html"}
+        <div id="body_content" class="main container">
+            {block name="body_main"}{/block}
+        </div>
+        {block name="body_outside_main"}{/block}
+        <footer id="footer">
+            {block name="body_footer"}
+            {include file="base/footer.html"}
+            {/block}
+        </footer>
+        <script src="/static/js/jquery-1.10.1.min.js"></script>
+        <script src="/static/js/bootstrap.min.js"></script>
+        <script src="/static/js/jquery.mmenu.js"></script>
+        <script src="/static/js/jungdokwan.js"></script>
+        
+        <script type="text/javascript">
+            if (!"console" in window) {
+                window.console = {
+                    log: function() {
+                    }
+                };
+            }
+            
+            window['jung'] = $.extend(window.jung, {
+                version: 1,
+                rootUri: '{site_url()}',
+                myUserId: '',
+                myAccountId: '',
+                getUrl: function(path) {
+                    return this.rootUri + path;
+                }
+            });
+
+            var config = {
+                base: '{site_url()}'
+            };
+        </script>
+        <script>
+            "use strict";
+            (function() {
+                if (typeof (window.jung) === 'undefined')
+                    window.jung = {};
+
+                $.extend(window.jung, {
+                    pushConfig: '',
+                });
+            })();
+        </script>
+        <script src="/static/js/home/underscore.js"></script>
+        <script src="/static/js/home/backbone.js"></script>
+        <script src="/static/js/home/mustache.js"></script>
+        <script src="/static/js/home/models.js"></script>
+        <script src="/static/js/home/views.js"></script>
+        <script>
+            $('.carousel').carousel({
+                interval: 2000
+            })
+        </script>
+        {block name="body_post_main"}{/block}
+    </body>
+</html>
