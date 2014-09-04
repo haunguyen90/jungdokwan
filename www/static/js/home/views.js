@@ -360,8 +360,10 @@
       "": "home",
       "home": "home",
       "about": "about",
-      "news_event": "news_event",
+      "posts/:value": "news_event",
       "news_event/page/:value": "news_event",
+//      "course": "news_event",
+//      "news_event/page/:value": "news_event",
       "news_event/:value": "news_event_detail",
       "gallery": "gallery",
       "gallery/:value": "gallery_detail",
@@ -430,7 +432,7 @@
       var root = $("body #body_content").html(''),
               el = $("<div />").appendTo(root).get(0),
               view = new contactView({
-                el: el,
+                el: el
               });
               view.render();
     },
