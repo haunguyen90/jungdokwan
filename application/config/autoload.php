@@ -50,6 +50,7 @@
 			APPPATH . 'packages/tests',
       APPPATH . 'packages/gallery',
 			APPPATH . 'packages/contact',
+      APPPATH . 'packages/admin',
       APPPATH . 'packages/modal',
       
 	);
