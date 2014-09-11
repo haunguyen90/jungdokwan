@@ -118,7 +118,7 @@
                 return data;
             }, this);
 
-            var uploadUrl = af.getUrl(this.url);
+            var uploadUrl = jung.getUrl(this.url);
             function sendForm() {
                 if (forms.length > 0) {
                     var data = forms.pop(),
@@ -154,7 +154,7 @@
 
             var req = $.ajax({
                 xhr: getXhrGenerator(updateProgressBar),
-                url: af.getUrl(this.url),
+                url: jung.getUrl(this.url),
                 type: "POST",
                 contentType: false,
                 processData: false,
@@ -187,7 +187,7 @@
             data = new FormData(form.get(0));
         var promise = $.ajax({
             xhr: getXhrGenerator(updateProgressBar),
-            url: af.getUrl("/apps/opportunities/files/upload"),
+            url: jung.getUrl("/apps/opportunities/files/upload"),
             type: "POST",
             contentType: false,
             processData: false,
@@ -200,7 +200,7 @@
     }
     //$(init);
 
-    $.extend(true, af, {
+    $.extend(true, jung, {
         util: {
             AfUploader: AfUploader
         }
@@ -210,6 +210,6 @@
 if ("define" in window) {
     // We're being loaded under require.js
     define([], function () {
-        return af.util.AfUploader;
+        return jung.util.AfUploader;
     });
 }

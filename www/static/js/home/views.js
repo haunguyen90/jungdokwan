@@ -135,6 +135,11 @@
         this.page = opts.page
       else
         this.page = 0;
+      
+      if('type' in opts)
+        this.type = opts.page
+      else
+        this.page = 'news'
       this._views = {};
       this.data = {};
       this.paging = {
@@ -155,7 +160,7 @@
     },
     render: function() {
       this.setPagination(this.page);
-      this.data.newsEvent = this.collection.getPage(this.paging.start, this.paging.perPage);
+      this.data.newsEvent = this.collection.getPage(this.paging.start, this.paging.perPage, this.type);
       this.data.paging = this.paging.page;
       this.data.postCat = jung.postCat.models;
       this.data.recentPosts = this.collection.getRecentPosts();
@@ -360,7 +365,7 @@
       "": "home",
       "home": "home",
       "about": "about",
-      "posts/:value": "news_event",
+      "posts/:value/page/:page": "news_event",
       "news_event/page/:value": "news_event",
 //      "course": "news_event",
 //      "news_event/page/:value": "news_event",
@@ -393,7 +398,7 @@
               })
       view.render();
     },
-    news_event: function(page) {
+    news_event: function(page, value) {
       if (isNaN(page))
         page = 1;
       var root = $("body #body_content").html(''),
@@ -401,7 +406,8 @@
               view = new newsEventView({
                 el: el,
                 collection: jung.posts,
-                page: page
+                page: page,
+                type: value
               });
       jung.posts.fetch();
     },

@@ -343,3 +343,12 @@ table.dataTable thead .sorting:after {
 .panel-yellow a:hover {
     color: #df8a13;
 }
+.cu-hand {
+    cursor: pointer;
+}
+.action-button{
+    margin-left: 5px
+}
+#image_upload{
+    margin-top: 5px
+}

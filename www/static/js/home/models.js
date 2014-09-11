@@ -37,6 +37,7 @@
     initialize: function() {
       this.set("postDetails", new postDetailsCollection());
     },
+    urlRoot: jung.getUrl("/api/jungdokwan"),
     set: function(key, val, opts) {
       if (typeof key == "object") {
         var attrs = key,
@@ -79,7 +80,7 @@
     setSortOrder: function(order) {
       this.sortOrder = order;
     },
-    getPage: function(start, end) {
+    getPage: function(start, end, type) {
       if (start != 0)
         start = start - 1;
       if (typeof (start) == 'undefined')

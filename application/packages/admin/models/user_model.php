@@ -11,6 +11,12 @@ class User_model extends MY_Model{
     return $this->db->from('user')
              ->where('username', $username)
             ->where('password', $password)
-            ->get()->result();
+            ->get()->row();
+  }
+  
+  public function get_by_id($id){
+    return $this->db->from('user')
+                    ->where('id', $id)
+                    ->get()->row();
   }
 }

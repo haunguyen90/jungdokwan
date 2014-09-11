@@ -18,7 +18,9 @@ Class Post extends MY_Model {
   public $post_categories;
   public $post_type_id;
   public $tag;
-  
+  public $details = array();
+
+
   private $keys = array('id', 'post_author', 'post_date', 'post_content_en', 
                         'post_content_vi', 'post_title_en', 'post_title_vi',
                         'post_modified', 'description_en', 'description_vi',
@@ -52,6 +54,51 @@ Class Post extends MY_Model {
     foreach ($this->keys AS $k) {
       unset($this->{$k});
     }
+  }
+  
+  public function create() {
+    $this->id = NULL;
+//    $this->post_date = new Datetime("now");
+    
+    if (($save = $this->save())) {
+      foreach ($this->details as $detail){
+        $this->add_details($this->id, $detail);
+      }
+      return $save;
+    }
+
+    return FALSE;
+  }
+  
+  public function set_field($field_name, $field_value) {
+    $this->{$field_name} = $field_value;
+  }
+  
+  public function destroy_details($post_id, $detail_id) {
+    return $this->db
+                    ->where("id", $detail_id)
+                    ->where("id_post", $post_id)
+                    ->limit(1)
+                    ->delete("gallery");
+  }
+  
+  public function add_details($post_id, $detail) {
+    $row = array(
+        "id_post" => $post_id,
+        "url" => $detail->url,
+        "file_name" => $detail->file_name,
+        "description_vi" => $detail->description_vi,
+        "description_en" => $detail->description_en
+    );
+    return $this->db
+                    ->insert("gallery", $row);
+  }
+  public function update_details($data){    
+    $this->db
+            ->where("id", $data->id)
+            ->set($data)
+            ->update("gallery");
+    return TRUE;
   }
   
   public function getArray($array = FALSE) {
@@ -90,9 +137,11 @@ Class Post extends MY_Model {
   }
   
   public function save() {
+    $this->post_modified = new Datetime("now");
     $row = self::get_row($this, $this->keys);
-
+    
     if ($this->id) {
+      $this->db->set('post_modified', 'NOW()', FALSE);
       $this->db
               ->where("id", $this->id)
               ->set($row)
@@ -103,8 +152,9 @@ Class Post extends MY_Model {
       }
       return FALSE;
     } else {
-      $this->db->set('user_id', $this->user_id);
-      $this->db->set('account_id', $this->account_id);
+//      $this->db->set('post_author', $this->post_author);
+      $this->db->set('post_date', 'NOW()', FALSE);
+      $this->db->set('post_modified', 'NOW()', FALSE);
       $save = $this->db->insert("posts", $row);
       if (!$save) {
         show_error("unable to create posts");
@@ -127,7 +177,7 @@ Class Post extends MY_Model {
   
   public static function get_str($object) {
     if ($object instanceof Datetime) {
-      return $object->format(DateTime::ISO8601);
+      return '2014-09-09';
     } else {
       return (string) $object;
     }

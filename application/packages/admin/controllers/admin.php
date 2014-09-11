@@ -6,12 +6,13 @@
  * and open the template in the editor.
  */
 class Admin extends MY_Controller{
+  protected $requires_login = TRUE;
   public function __construct() {
     parent::__construct();
   }
   
   public function index(){
-    echo 'here';
+    $this->render('admin/index.html');
   }
   
 }

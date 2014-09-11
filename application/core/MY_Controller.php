@@ -17,12 +17,14 @@ class MY_Controller extends CI_Controller {
     {
         parent::__construct();
         $session = $this->session->all_userdata();
+        if (isset($session['user_id']))
+        {
+            $this->load->model('user_model');
+            $this->user = $this->user_model->get_by_id($session['user_id']);
+        }
         $this->load->model('page_setting', 'setting');
         
         $this->pageSetting = $this->setting->getSetting();
-
-        
-        $this->setup_timezone();
 
         $this->load->library('smarty');
         $this->setLang($session);
@@ -55,7 +57,7 @@ class MY_Controller extends CI_Controller {
         {
             return FALSE;
         }
-
+        
         $this->load->model('meta_data_model');
         $this->meta_data_model->user_id = $this->user->id;
 
@@ -95,6 +97,7 @@ class MY_Controller extends CI_Controller {
 
     private function setup_timezone ()
     {
+     
         $default = "Etc/UTC";
         if (isset($this->user))
         {
@@ -116,11 +119,11 @@ class MY_Controller extends CI_Controller {
     {
         $view_data = array_merge($view_data, array(
             'user'      => $this->user,
-            'user_quota'=> $this->get_user_quota_info(),
+//            'user_quota'=> $this->get_user_quota_info(),
             'account'   => $this->account,
             'action_prompts'    => $this->get_action_prompts(5),
             'updated_opportunities'    => $this->get_updated_opportunities(5),
-            'grouped_notifications' => $this->get_notifications(),
+//            'grouped_notifications' => $this->get_notifications(),
             'push_config'           => $this->get_push_config(),
             'STATIC_URI'            => '/static',
             'iframe_title'          => $this->iframe_title,
@@ -138,11 +141,11 @@ class MY_Controller extends CI_Controller {
     {
         $view_data = array_merge($view_data, array(
             'user'      => $this->user,
-            'user_quota'=> $this->get_user_quota_info(),
+//            'user_quota'=> $this->get_user_quota_info(),
             'account'   => $this->account,
             'action_prompts'    => $this->get_action_prompts(5),
             'updated_opportunities'    => $this->get_updated_opportunities(5),
-            'grouped_notifications' => $this->get_notifications(),
+//            'grouped_notifications' => $this->get_notifications(),
             'push_config'           => $this->get_push_config(),
             'STATIC_URI'            => '/static',
         ));
@@ -276,6 +279,7 @@ class MY_Controller extends CI_Controller {
 
     public function _remap ($method, $params = array())
     {
+      
         if (isset($this->requires_login) && !isset($this->user))
         {
             if (get_class($this)!='login') { 
