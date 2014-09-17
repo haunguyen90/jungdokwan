@@ -279,7 +279,9 @@
       this.templateString = $("#" + this.template).text().trim();
     },
     render: function() {
-      this.data.posts = this.collection.models;
+      this.data.posts = this.collection.filter(function(m) {
+        return m.get('post_type_id') == 1 || m.get('post_type_id') == 2;
+      });
       this.data.postFunction = {
         renderType: function() {
           return function(text, render) {
@@ -295,9 +297,9 @@
               return render('undefined')
           }
         },
-        renderContent: function(){
-          return function(text, render){
-            var content = render(text).substring(0,250);
+        renderContent: function() {
+          return function(text, render) {
+            var content = render(text).substring(0, 250);
             return content + '...'
           }
         }
@@ -306,6 +308,53 @@
       this.$el.html(Mustache.render(this.templateString, this.data));
       $('#dataTables-example').dataTable();
       $('h1.page-header').html('Quản Lý Bài Viết');
+    }
+  })
+
+  var galleryView = Backbone.View.extend({
+    templateString: "",
+    initialize: function(opts) {
+
+      this.data = {};
+
+      this.listenTo(this.collection, "change sync add destroy", this.render);
+
+      this.getTemplate();
+    },
+    template: "template-gallery-admin",
+    getTemplate: function() {
+      this.templateString = $("#" + this.template).text().trim();
+    },
+    render: function() {
+      this.data.posts = this.collection.filter(function(m) {
+        return m.get('post_type_id') == 3
+      });
+      this.data.postFunction = {
+        renderType: function() {
+          return function(text, render) {
+            if (render(text).trim() == '1')
+              return render('Course')
+            else if (render(text).trim() == '2')
+              return render('News & Event')
+            else if (render(text).trim() == '3')
+              return render('Images')
+            else if (render(text).trim() == '4')
+              return render('Video')
+            else
+              return render('undefined')
+          }
+        },
+        renderContent: function() {
+          return function(text, render) {
+            var content = render(text).substring(0, 250);
+            return content + '...'
+          }
+        }
+      }
+
+      this.$el.html(Mustache.render(this.templateString, this.data));
+      $('#dataTables-example').dataTable();
+      $('h1.page-header').html('Quản Lý Gallery');
     }
   })
 
@@ -334,24 +383,24 @@
           {value: 3, name: "Hình Ảnh"},
           {value: 4, name: "Video"}
         ],
-        renderPostType: function(){
-          return function(text, render){
-            if(render(text).trim() == post_type)
+        renderPostType: function() {
+          return function(text, render) {
+            if (render(text).trim() == post_type)
               return "selected='selected'"
             else
               return ''
           }
         },
-        renderPostCat: function(){
-          return function(text, render){
-            if(render(text).trim() == post_cat)
+        renderPostCat: function() {
+          return function(text, render) {
+            if (render(text).trim() == post_cat)
               return "selected='selected'"
             else
-              return '' 
+              return ''
           }
         }
       }
-        
+
       this.data.postCats = jung.postCat.filter(function(m) {
         return m.get('post_type_id') == post_type;
       });
@@ -366,7 +415,7 @@
       "change [name='highlight']": "inputChange",
       "click [name=save_post]": "onSavePost"
     },
-    onSavePost: function(ev){
+    onSavePost: function(ev) {
       var onSaveSuccess = function() {
         jung.nav.router.navigate("posts", {trigger: true});
       };
@@ -389,39 +438,39 @@
 // Nothing to Upload
         return;
       }
-      
+
 // 1 or more files selected, we need to upload.
 
-        var uploader = this.uploader,
-                thisView = this;
-        uploader.setUrl("/api/files/upload");
-        uploader.send()
-                .done(function() {
+      var uploader = this.uploader,
+              thisView = this;
+      uploader.setUrl("/api/files/upload");
+      uploader.send()
+              .done(function() {
 // Refetch the model after the files are added
-                  uploader.reset();
-                  thisView.model.set('image', file_name);
-                  $('#image_upload').html('Upload Success');
-                });
+                uploader.reset();
+                thisView.model.set('image', file_name);
+                $('#image_upload').html('Upload Success');
+              });
       return false;
     },
-    inputChange: function(ev){
+    inputChange: function(ev) {
       var $el = $(ev.currentTarget),
               name = $el.attr("name"),
               value = $el.val();
-     this.model.set(name, value);
-     
-     
+      this.model.set(name, value);
+
+
     },
-    onPostTypeChange: function(ev){
+    onPostTypeChange: function(ev) {
       var $el = $(ev.currentTarget),
               name = $el.attr("name"),
               value = $el.val();
-     this.model.set(name, value);
-     this.render();
+      this.model.set(name, value);
+      this.render();
     },
-    ckeditorChange: function(ev){
+    ckeditorChange: function(ev) {
       var name = ev.editor.name,
-              value = $('#'+name).val();
+              value = $('#' + name).val();
       this.model.set(name, value);
     },
     initPage: function() {
@@ -436,6 +485,146 @@
       CKEDITOR.instances.post_content_vi.on('blur', this.ckeditorChange.bind(this));
     }
   })
+  var galleryDetail = Backbone.View.extend({
+    templateString: "",
+    initialize: function() {
+
+      this.data = {};
+      this.uploader = new jung.util.AfUploader();
+//      this.listenTo(this.model, "change add remove sync", this.render);
+      this.listenToOnce(this.model, "change", this.render);
+      this.listenTo(this.collection, 'add remove', this.render)
+      this.getTemplate();
+    },
+    template: "template-galleryDetail-admin",
+    getTemplate: function() {
+      this.templateString = $("#" + this.template).text().trim();
+    },
+    render: function() {
+      this.data.posts = this.model.attributes;
+      var post_type = this.model.get('post_type_id');
+      var post_cat = this.model.get('post_categories');
+      this.data.postFunction = {
+        "postType": [
+          {value: 1, name: "Chương Trình"},
+          {value: 2, name: "Tin Tức & Sự Kiện"},
+          {value: 3, name: "Hình Ảnh"},
+          {value: 4, name: "Video"}
+        ],
+        renderPostType: function() {
+          return function(text, render) {
+            if (render(text).trim() == post_type)
+              return "selected='selected'"
+            else
+              return ''
+          }
+        },
+        renderPostCat: function() {
+          return function(text, render) {
+            if (render(text).trim() == post_cat)
+              return "selected='selected'"
+            else
+              return ''
+          }
+        }
+      }
+
+      this.data.postCats = jung.postCat.filter(function(m) {
+        return m.get('post_type_id') == post_type;
+      });
+      this.data.postDetail = this.collection.models;
+      this.$el.html(Mustache.render(this.templateString, this.data));
+      this.initPage();
+    },
+    events: {
+      "change [data-dom='input-text']": "inputChange",
+      "blur textarea": "inputChange",
+      "change [name='image']": "onUpload",
+      "change [name='post_type_id']": "onPostTypeChange",
+      "change [name='highlight']": "inputChange",
+      "click [name=save_post]": "onSavePost",
+      "click .add-image": "addImage"
+    },
+    addImage: function(ev){
+      var gallery_details = new (this.collection.model),
+        cid = gallery_details.cid;
+      var html = '<div>' +
+                    '<label>Url </label>' +
+                    '<input class="form-control" data-idDetail="'+cid+'" vaue="" name="" placeholder="http://">' +
+                    '<label>Mô Tả</label>' + 
+                    '<textarea name="" data-idDetail="'+cid+'" class="form-control" rows="3"></textarea>' + 
+                    '<hr>' +
+                    '</div>';
+      // $('.image-sections', this.$el).append(html);
+      this.collection.add(gallery_details);
+
+    },
+    onSavePost: function(ev) {
+      var onSaveSuccess = function() {
+        jung.nav.router.navigate("posts", {trigger: true});
+      };
+      this.model.save(null, {success: _.bind(onSaveSuccess, this)});
+    },
+    onUpload: function(ev) {
+      var $file = $("[name='image']", this.el),
+              file = $file.get(0),
+              file_name = file.files[0].name;
+
+      if (this.uploader && $file.val() != "") {
+        this.uploader.addFile("image", file, {
+          alt_file_name: file_name,
+          description: 'upload image'
+        });
+        this.uploader.addField('file_name_input', file_name);
+      }
+
+      if (!this.uploader || this.uploader.getFileCount() == 0) {
+// Nothing to Upload
+        return;
+      }
+
+// 1 or more files selected, we need to upload.
+
+      var uploader = this.uploader,
+              thisView = this;
+      uploader.setUrl("/api/files/upload");
+      uploader.send()
+              .done(function() {
+// Refetch the model after the files are added
+                uploader.reset();
+                thisView.model.set('image', file_name);
+                $('#image_upload').html('Upload Success');
+              });
+      return false;
+    },
+    inputChange: function(ev) {
+      var $el = $(ev.currentTarget),
+              name = $el.attr("name"),
+              value = $el.val(),
+              cidDetail = $el.data('idDetail');
+      if(cidDetail)
+        this.collection.get(cidDetail);
+      else
+        this.model.set(name, value);
+
+
+    },
+    onPostTypeChange: function(ev) {
+      var $el = $(ev.currentTarget),
+              name = $el.attr("name"),
+              value = $el.val();
+      this.model.set(name, value);
+      this.render();
+    },
+    ckeditorChange: function(ev) {
+      var name = ev.editor.name,
+              value = $('#' + name).val();
+      this.model.set(name, value);
+    },
+    initPage: function() {
+      $('h1.page-header').html('Thêm/Sửa Hình Ảnh');
+    }
+  })
 
 
   var JungRouter = Backbone.Router.extend({
@@ -443,7 +632,9 @@
       "": "dashboard",
       "posts": "posts",
       "posts/:value": "postDetail",
-      "posts-create": "createPost"
+      "posts-create": "createPost",
+      "gallery": "gallery",
+      "gallery-create": "createGallery"
     },
     dashboard: function() {
       var root = $("#admin-content").html(''),
@@ -453,6 +644,15 @@
               });
 
       view.render();
+    },
+    gallery: function() {
+      var root = $("#admin-content").html(''),
+              el = $("<div />").appendTo(root).get(0),
+              view = new galleryView({
+                el: el,
+                collection: jung.posts
+              })
+      jung.posts.fetch();
     },
     posts: function() {
       var root = $("#admin-content").html(''),
@@ -473,13 +673,13 @@
                   el: el,
                   model: model
                 });
-        jung.postCat.fetch().done(function(){
+        jung.postCat.fetch().done(function() {
           model.fetch();
         });
-        
+
       });
     },
-    createPost: function(){
+    createPost: function() {
       var root = $("#admin-content").html(''),
               el = $("<div />").appendTo(root).get(0),
               model, view;
@@ -489,10 +689,29 @@
                   el: el,
                   model: model
                 });
-        jung.postCat.fetch().done(function(){
+        jung.postCat.fetch().done(function() {
           view.render();
         });
-        
+
+      });
+    },
+    createGallery: function() {
+      var root = $("#admin-content").html(''),
+              el = $("<div />").appendTo(root).get(0),
+              model, view;
+      jung.posts.fetch().done(function() {
+        model = new jung.models.post(),
+        collection = model.get('postDetails');
+        model.set('post_type_id', 3);
+        var view = new galleryDetail({
+                  el: el,
+                  model: model,
+                  collection: collection
+                });
+        jung.postCat.fetch().done(function() {
+          view.render();
+        });
+
       });
     }
   });
