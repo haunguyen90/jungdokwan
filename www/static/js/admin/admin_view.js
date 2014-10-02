@@ -58,7 +58,34 @@
     },
     events: {
       'click .edit-block-wiget': "onEditBlock",
-      'click .cancel-block': "onCancelBlock"
+      'click .cancel-block': "onCancelBlock",
+      'click .save-block': "onSaveBlock"
+    },
+    onSaveBlock: function(ev){
+      var $el = $(ev.currentTarget),
+              id = $el.parent().data('id');
+      var name = $('#input_name_' + id).val();
+      var description = $('#input_description_' + id).val();
+      var url = $('#select_url_block_' + id + ' .selectUrlBlock').val();
+      if(name.trim() == ''){
+          alert('vui lòng điền tên của block');
+          return false;
+      }
+      if(!url){
+          alert('vui lòng chọn link đính kèm');
+          return false;
+      }
+      $.ajax({
+          type: 'POST',
+          url: config.base + '/api/block_wiget/saveBlock',
+          data: {id: id, name: name,description: description, url: url[0]},
+          dataType: 'json',
+          success: function(result){
+              console.log(result)
+//              this.onCancelBlock(id)
+              jung.block_wiget.fetch();
+          }
+      })
     },
     onEditBlock: function(ev){
       var $el = $(ev.currentTarget),

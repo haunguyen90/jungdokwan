@@ -16,4 +16,8 @@ Class Block_wiget_model extends MY_Model {
     else
       return $row->result();
   }
+  public function update($id, $data){
+    $this->db->where('id', $id)
+             ->update($this->table_name,$data);
+  }
 }

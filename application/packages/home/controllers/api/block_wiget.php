@@ -1,8 +1,12 @@
 <?php
 
-class block_wiget extends MY_Controller {
+class Block_wiget extends MY_Controller {
   
-  public function index() {
+    public function __construct() {
+        parent::__construct();
+        $this->load->model('block_wiget_model','block');
+    }
+    public function index() {
     if ($this->input->is_post()) {
       $this->index_post();
     } else {
@@ -10,8 +14,13 @@ class block_wiget extends MY_Controller {
     }
   }
   public function index_get(){
-    $this->load->model('block_wiget_model','block');
     $list = $this->block->getArray();
     return $this->return_json($list);
+  }
+  public function saveBlock(){
+      $data = $_POST;
+      $data['url'] = 'post-detail/'.$data['url'];
+      $this->block->update($data['id'],$data);
+      echo json_encode($data);
   }
 }

@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `album_gallery` (
   `description_vi` text NOT NULL,
   `description_en` text NOT NULL,
   `highlight` int(11) NOT NULL DEFAULT '0',
-  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created` datetime ,
   `image` varchar(255) NOT NULL
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
