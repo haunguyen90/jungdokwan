@@ -140,7 +140,7 @@ class Jungdokwan extends MY_Controller {
             }
 
             foreach ($changed as $update) {
-              $this->post->update_note($update);
+              $this->post->update_details($update);
             }
 
             foreach ($destroyed AS $detail_id) {

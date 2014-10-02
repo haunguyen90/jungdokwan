@@ -17,6 +17,7 @@ if (empty($_SERVER["REMOTE_ADDR"]))
     $_SERVER["REMOTE_ADDR"] = "0.0.0.0";
 }
 
+
 /*
  *---------------------------------------------------------------
  * APPLICATION ENVIRONMENT

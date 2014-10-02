@@ -1,11 +1,4 @@
 (function(jung) {
-  function parseDates(data) {
-    _(["created", "created_datetime"]).map(function(key) {
-      if (data[key]) {
-        data[key] = new Date(data[key]);
-      }
-    }, data);
-  }
   var DatedAttrModel = Backbone.Model.extend({
     parse: function(data, req) {
       if (data.created) {
@@ -81,14 +74,17 @@
       this.sortOrder = order;
     },
     getPage: function(start, end, type) {
+      var models = this.models.filter(function(m){
+        return m.get('post_type_id') == type
+      });
       if (start != 0)
         start = start - 1;
       if (typeof (start) == 'undefined')
-        return this.models.slice(0, this.perPage);
+        return models.slice(0, this.perPage);
       else if (typeof (end) == 'undefined')
-        return this.models.slice(start, this.perPage);
+        return models.slice(start, this.perPage);
       else
-        return this.models.slice(start, end);
+        return models.slice(start, end);
     },
     getRecentPosts: function(limit) {
       if (!limit)

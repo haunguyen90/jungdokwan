@@ -3,34 +3,7 @@
     if (collection.fetch)
       collection.fetch();
   })
-  function fakeModal(el) {
-    var overlay = $("<div />")
-            .css({
-            })
-
-            .hide()
-            .appendTo("body");
-    var modal = $(el)
-            .css({
-            })
-            .hide()
-            .appendTo("body");
-    var close = function() {
-      overlay.remove();
-      modal.remove();
-      ClientApi.fakeModalCancel();
-    },
-            show = function() {
-              overlay.show();
-              modal.show();
-//            ClientApi.fakeModal();
-            };
-    overlay.on("click", close);
-    return {
-      show: show,
-      close: close
-    };
-  }
+ 
 
   function formatField(value, formatArgs) {
     var args = formatArgs.split(":"),
@@ -132,14 +105,14 @@
     templateString: "",
     initialize: function(opts) {
       if ('page' in opts)
-        this.page = opts.page
+        this.page = opts.page;
       else
         this.page = 0;
       
       if('type' in opts)
-        this.type = opts.page
+        this.type = opts.type;
       else
-        this.page = 'news'
+        this.type = 2;
       this._views = {};
       this.data = {};
       this.paging = {
@@ -192,7 +165,11 @@
         this.paging.currentPage = page + 1;
       }
       this.paging.currentPage = parseInt(this.paging.currentPage);
-      this.paging.total = this.collection.length;
+      var type = this.type;
+      var totalPost = this.collection.filter(function(m){
+        return m.get('post_type_id') == type;
+      })
+      this.paging.total = totalPost.length;
       this.paging.numberPage = Math.ceil(this.paging.total / this.paging.perPage);
 
       this.paging.page = new Array();
@@ -201,32 +178,32 @@
           this.paging.page.push({
             page: i,
             active: (i == this.page) ? 'active' : null,
-            href: (i == this.page) ? null : 'href=#news_event/page/' + i
+            href: (i == this.page) ? null : 'href=#posts/type/'+this.type+'/page/' + i
           });
         }
         if (this.paging.currentPage == this.paging.numberPage) {
           this.paging.page.push({
             prev: {
               page: this.paging.currentPage - 1,
-              href: 'href=#news_event/page/' + (this.paging.currentPage - 1)
+              href: 'href=#posts/type/'+this.type+'/page/' + (this.paging.currentPage - 1)
             }
           });
         } else if (this.paging.currentPage == 1 || this.paging.numberPage == 0) {
           this.paging.page.push({
             next: {
               page: this.paging.currentPage + 1,
-              href: 'href=#news_event/page/' + (this.paging.currentPage + 1)
+              href: 'href=#posts/type/'+this.type+'/page/' + (this.paging.currentPage + 1)
             }
           });
         } else {
           this.paging.page.push({
             prev: {
               page: this.paging.currentPage - 1,
-              href: 'href=#news_event/page/' + (this.paging.currentPage - 1)
+              href: 'href=#posts/type/'+this.type+'/page/' + (this.paging.currentPage - 1)
             },
             next: {
               page: this.paging.currentPage + 1,
-              href: 'href=#news_event/page/' + (this.paging.currentPage + 1)
+              href: 'href=#posts/type/'+this.type+'/page/' + (this.paging.currentPage + 1)
             }
           });
         }
@@ -365,11 +342,11 @@
       "": "home",
       "home": "home",
       "about": "about",
-      "posts/:value/page/:page": "news_event",
-      "news_event/page/:value": "news_event",
+      "posts/type/:value/page/:page": "news_event",
+//      "news_event/page/:value": "news_event",
 //      "course": "news_event",
 //      "news_event/page/:value": "news_event",
-      "news_event/:value": "news_event_detail",
+      "post-detail/:value": "news_event_detail",
       "gallery": "gallery",
       "gallery/:value": "gallery_detail",
       "contact": "contact"
@@ -398,7 +375,7 @@
               })
       view.render();
     },
-    news_event: function(page, value) {
+    news_event: function(value, page) {
       if (isNaN(page))
         page = 1;
       var root = $("body #body_content").html(''),
@@ -458,60 +435,6 @@
       })
 
 
-    },
-    showOppDetail: function(oppId) {
-      var root = $("body .main-content-iframe").html(''),
-              el = $("<div />").appendTo(root).get(0),
-              model = af.opportunities.get(oppId);
-      af.nav.views.viewDetail = new af.views.OpDetailView({
-        model: model,
-        el: el
-      });
-
-      if (af.contacts.length == 0) {
-        af.contacts.fetch().done(function() {
-          af.nav.views.viewDetail.render();
-        });
-      } else {
-        af.nav.views.viewDetail.render();
-      }
-      model.fetch();
-    },
-    showNewLead: function() {
-      this.showNewOpp(true);
-    },
-    showNewOpp: function(isLead, contactId) {
-      var root = $("body .main-content-iframe").empty(),
-              el = $("<div />").appendTo(root).get(0),
-              model = new af.models.OpportunityModel({
-                is_lead: isLead ? "Y" : "N"
-              });
-
-      var view = new af.views.OpDetailView({
-        model: model,
-        el: el
-      });
-
-
-      if (contactId) {
-        af.contacts.once("sync", function() {
-          console.log("setting for_contact_id", contactId);
-          model.set("for_contact_id", contactId);
-        });
-        af.contacts.fetch().done(function() {
-          view.render();
-        });
-      } else {
-        af.opportunities.add(model);
-        view.render();
-      }
-
-    },
-    createForContactId: function(contactId, type) {
-      if (type == 'opp')
-        this.showNewOpp(false, contactId);
-      else
-        this.showNewOpp(true, contactId);
     }
   });
 
@@ -536,9 +459,7 @@
         "viewList": "",
         "viewDetail": ""
       }
-//            "openContactCard": openContactCard(),
-//            "closeContactCard": closeContactCard()
-    },
+    }
   });
 
 })();

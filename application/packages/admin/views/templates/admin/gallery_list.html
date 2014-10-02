@@ -33,7 +33,7 @@
                                 <td class="center">{{#postFunction}} {{#renderContent}} {{post_content_vi}} {{/renderContent}} {{/postFunction}}</td>
                                 <td >{{post_date}}</td>
                                 <td class="center"><img height="100" src="/static/media/images/{{image}}" alt="" /></td>
-                                <td> <span class="glyphicon glyphicon-pencil cu-hand action-button"></span> <span class="glyphicon glyphicon-trash cu-hand action-button"></span> </td>
+                                <td> <a href="#gallery/{{id}}"><span class="glyphicon glyphicon-pencil cu-hand action-button"></span></a> <span data-action="delete" data-id="{{id}}" class="glyphicon glyphicon-trash cu-hand action-button"></span> </td>
                             </tr>
                             {{/attributes}}
                             {{/posts}}
@@ -88,26 +88,9 @@
                                             <div class="alert alert-success" id="image_upload">{{image}}</div>
                                         </div>
 
-                            <div class="form-group" style="border-bottom: 1px solid rgb(197, 195, 195); border-top: 1px solid rgb(197, 195, 195)">
+                            <div id="gallery_image" class="form-group" style="border-bottom: 1px solid rgb(197, 195, 195); border-top: 1px solid rgb(197, 195, 195)">
                                 
-                                <div class="image-sections">
-                                {{#postDetail}}
-                                {{#attributes}}
-                                    <div>
-                                        <label>Url </label>
-                                        <input class="form-control" data-idDetail="{{cid}}" vaue="{{url}}" name="url" placeholder="http://">
-                                        <label>Mô Tả</label>
-                                        <textarea name="description_vi" class="form-control" rows="3">{{description_vi}}</textarea>
-                                        <hr>
-                                    </div>
-                                {{/attributes}}
-                                {{/postDetail}}
-                                </div>
                                 
-                                <div style="margin: 2px 0px 4px 0px;">
-                                    
-                                    <button type="button" class="add-image glyphicon glyphicon-plus btn btn-default"></button>
-                                </div>
                             </div>
                             
 <!--                            Select property of post ---------------------------->
@@ -148,5 +131,29 @@
     </div>
     <!-- /.col-lg-12 -->
 </div>
+    {/literal}
+</script>
+
+<script id='template-galleryImageDetail-admin' type='text/html'>
+    {literal}
+    <div class="image-sections">
+             {{#images}}
+             {{#attributes}}
+                                    <div class="image-detail">
+                                        <label>Url </label>
+                                        <input class="form-control" data-dom="input-text" value="{{url}}" data-iddetail="{{cid}}" name="url" placeholder="http://">
+                                        
+                                        <label>Mô Tả</label>
+                                        <textarea name="description_vi" data-dom="input-text" data-iddetail="{{cid}}" class="form-control" rows="3">{{description_vi}}</textarea>
+                                        <hr>
+                                    </div>
+                                
+                                </div>
+                            {{/attributes}}
+                            {{/images}}
+                                <div style="margin: 2px 0px 4px 0px;">
+                                    
+                                    <button type="button" class="add-image glyphicon glyphicon-plus btn btn-default"></button>
+                                </div>
     {/literal}
 </script>

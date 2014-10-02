@@ -74,21 +74,36 @@ Class Post extends MY_Model {
     $this->{$field_name} = $field_value;
   }
   
-  public function destroy_details($post_id, $detail_id) {
+  public function destroy($id = NULL) {
+    $this->destroy_details($id);
     return $this->db
+                    ->where("id", $id ? : $this->id)
+                    ->limit(1)
+                    ->delete("posts");
+  }
+  
+  public function destroy_details($post_id, $detail_id = null) {
+    if($detail_id == null){
+      return $this->db
+                ->where("id_post", $post_id)
+                ->delete('gallery');
+    }else{
+      return $this->db
                     ->where("id", $detail_id)
                     ->where("id_post", $post_id)
                     ->limit(1)
                     ->delete("gallery");
+    }
+    
   }
   
   public function add_details($post_id, $detail) {
     $row = array(
         "id_post" => $post_id,
         "url" => $detail->url,
-        "file_name" => $detail->file_name,
+        "file_name" => null,
         "description_vi" => $detail->description_vi,
-        "description_en" => $detail->description_en
+        "description_en" => $detail->description_vi
     );
     return $this->db
                     ->insert("gallery", $row);
@@ -137,6 +152,7 @@ Class Post extends MY_Model {
   }
   
   public function save() {
+    
     $this->post_modified = new Datetime("now");
     $row = self::get_row($this, $this->keys);
     

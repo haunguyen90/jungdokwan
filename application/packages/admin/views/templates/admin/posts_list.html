@@ -33,7 +33,7 @@
                                 <td class="center">{{#postFunction}} {{#renderContent}} {{post_content_vi}} {{/renderContent}} {{/postFunction}}</td>
                                 <td >{{post_date}}</td>
                                 <td class="center"><img height="100" src="/static/media/images/{{image}}" alt="" /></td>
-                                <td> <span class="glyphicon glyphicon-pencil cu-hand action-button"></span> <span class="glyphicon glyphicon-trash cu-hand action-button"></span> </td>
+                                <td> <a href="#posts/{{id}}"><span class="glyphicon glyphicon-pencil cu-hand action-button"></span></a> <span data-id="{{id}}" data-action="delete" class="glyphicon glyphicon-trash cu-hand action-button"></span> </td>
                             </tr>
                             {{/attributes}}
                             {{/posts}}

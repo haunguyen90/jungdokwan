@@ -533,3 +533,92 @@
             </div>
             <!-- /.row -->    
 </script>
+
+<script id='template-blockWiget-admin' type='text/html'>
+{literal}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Block Wiget
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <form role="form">
+                            
+                            <div class="form-group">
+                                <label>Tiêu Đề </label>
+                                <input class="form-control" data-dom="input-text" value="" name="post_title_vi" placeholder="Tiêu Đề tiếng Việt ">
+                            </div>
+                            <div class="form-group">
+                                <label>Title </label>
+                                <input class="form-control" data-dom="input-text" value="" name="post_title_en" placeholder="Title ">
+                            </div>
+                            <div class="form-group">
+                                <label>Mô Tả  </label>
+                                <input class="form-control" data-dom="input-text" value="" name="description_vi" placeholder="Mô Tả tiếng Việt ">
+                            </div>
+                            <div class="form-group">
+                                <label>Description </label>
+                                <input class="form-control" data-dom="input-text" vaue="" name="description_en" placeholder="Description">
+                            </div>
+
+                                    <div class="form-group">
+                                           <label for="basic2" class="col-lg-2 control-label">hihi</label>
+
+                                            <div class="col-lg-10">
+                                              <select id="basic2" class="show-tick form-control" multiple>
+                                                <option>cow</option>
+                                                <option>bull</option>
+                                                <option class="get-class" disabled>ox</option>
+                                                <optgroup label="test" data-subtext="another test">
+                                                  <option>ASD</option>
+                                                  <option selected>Bla</option>
+                                                  <option>Ble</option>
+                                                </optgroup>
+                                              </select>
+                                            </div>
+                
+                
+                         
+                </div>
+                            
+<!--                            Select property of post ---------------------------->
+                            <div class="form-group">
+                                <label>Categories</label>
+                                <select name="post_categories" class="form-control">
+                                    <option value="none">---Select---</option>
+                                  
+                                    <option ></option>
+                                  
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Nổi Bật </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="highlight" id="highlight1" value="1" checked>Yes 
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="highlight" id="highlight2" value="0">No 
+                                </label>
+                                
+                            </div>
+                            
+                            <button type="button" name="save_post" class="btn btn-default">Submit Button</button>
+                            <button type="reset" class="btn btn-default">Reset Button</button>
+                            
+                        </form>
+                    </div>
+                    
+                </div>
+                <!-- /.row (nested) -->
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+{/literal}
+</script>

@@ -3,34 +3,7 @@
     if (collection.fetch)
       collection.fetch();
   })
-  function fakeModal(el) {
-    var overlay = $("<div />")
-            .css({
-            })
-
-            .hide()
-            .appendTo("body");
-    var modal = $(el)
-            .css({
-            })
-            .hide()
-            .appendTo("body");
-    var close = function() {
-      overlay.remove();
-      modal.remove();
-      ClientApi.fakeModalCancel();
-    },
-            show = function() {
-              overlay.show();
-              modal.show();
-//            ClientApi.fakeModal();
-            };
-    overlay.on("click", close);
-    return {
-      show: show,
-      close: close
-    };
-  }
+  
 
   function formatField(value, formatArgs) {
     var args = formatArgs.split(":"),
@@ -70,199 +43,30 @@
       return model.get('post_type_id') == 2 && model.get('highlight') == 1;
     }
   });
-
-  var aboutView = Backbone.View.extend({
+  
+  var blockWigetView = Backbone.View.extend({
     templateString: "",
     initialize: function() {
       this._views = {};
-      this.data = {};
-
       this.getTemplate();
     },
-    template: "template-about-mainview",
+    template: "template-blockWiget-admin",
     getTemplate: function() {
       this.templateString = $("#" + this.template).text().trim();
     },
     render: function() {
-      this.$el.html(this.templateString);
-    }
-  })
+//==============================================================================
 
-  var newsRightAside = Backbone.View.extend({
-    initialize: function(opts) {
-      if (opts.parentView) {
-        this.parentView = opts.parentView;
-      }
-      this.getTemplate();
-      this.listenTo(this.collection, 'change sync', this.render);
-      this.data = {};
-    },
-    render: function() {
-      this.data.postCat = this.collection.models;
-      this.data.recentPosts = this.parentView.collection.getRecentPosts();
-      this.data.tags = this.parentView.collection.getTag();
-      this.$el.html(Mustache.render(this.templateString, this.data));
-    },
-    template: 'template-newsRightAside',
-    getTemplate: function() {
-      this.templateString = $("#" + this.template).text().trim();
-    },
-  })
+      this.$el.html(Mustache.render(this.templateString));
+       var $basic2 = $('#basic2').selectpicker({
+        liveSearch: true,
+        maxOptions: 1
+      });
 
-  var newsEventView = Backbone.View.extend({
-    templateString: "",
-    initialize: function(opts) {
-      if ('page' in opts)
-        this.page = opts.page
-      else
-        this.page = 0;
-
-      if ('type' in opts)
-        this.type = opts.page
-      else
-        this.page = 'news'
-      this._views = {};
-      this.data = {};
-      this.paging = {
-        perPage: 5,
-        total: 0,
-        numberPage: 0,
-        from: 0,
-        to: 0,
-        page: new Array()
-      };
-      this.listenTo(this.collection, "change sync", this.render);
-
-      this.getTemplate();
-    },
-    template: "template-newsEvent-mainview",
-    getTemplate: function() {
-      this.templateString = $("#" + this.template).text().trim();
-    },
-    render: function() {
-      this.setPagination(this.page);
-      this.data.newsEvent = this.collection.getPage(this.paging.start, this.paging.perPage, this.type);
-      this.data.paging = this.paging.page;
-      this.data.postCat = jung.postCat.models;
-      this.data.recentPosts = this.collection.getRecentPosts();
-      this.data.tags = this.collection.getTag();
-      this.$el.html(Mustache.render(this.templateString, this.data));
-      var el = $('#news-righ-aside', this.el).html('');
-      var RightView = new newsRightAside({
-        el: el,
-        parentView: this,
-        collection: jung.postCat
-      })
-      RightView.render();
-    },
-    events: {
-      'click [data-action="detail"]': "showPostDetail"
-    },
-    showPostDetail: function(ev) {
-      var current = $(ev.currentTarget),
-              idPost = current.data('post');
-      jung.nav.router.navigate("news_event/" + idPost, {trigger: true});
-    },
-    setPagination: function(page) {
-      this.paging.currentPage = page;
-      if (page != 0) {
-        this.paging.start = this.paging.perPage * (page - 1);
-      }
-      if (page == 0) {
-        this.paging.start = 0;
-        this.paging.currentPage = page + 1;
-      }
-      this.paging.currentPage = parseInt(this.paging.currentPage);
-      this.paging.total = this.collection.length;
-      this.paging.numberPage = Math.ceil(this.paging.total / this.paging.perPage);
-
-      this.paging.page = new Array();
-      if (this.paging.numberPage > 1) {
-        for (var i = 1; i <= this.paging.numberPage; i++) {
-          this.paging.page.push({
-            page: i,
-            active: (i == this.page) ? 'active' : null,
-            href: (i == this.page) ? null : 'href=#news_event/page/' + i
-          });
-        }
-        if (this.paging.currentPage == this.paging.numberPage) {
-          this.paging.page.push({
-            prev: {
-              page: this.paging.currentPage - 1,
-              href: 'href=#news_event/page/' + (this.paging.currentPage - 1)
-            }
-          });
-        } else if (this.paging.currentPage == 1 || this.paging.numberPage == 0) {
-          this.paging.page.push({
-            next: {
-              page: this.paging.currentPage + 1,
-              href: 'href=#news_event/page/' + (this.paging.currentPage + 1)
-            }
-          });
-        } else {
-          this.paging.page.push({
-            prev: {
-              page: this.paging.currentPage - 1,
-              href: 'href=#news_event/page/' + (this.paging.currentPage - 1)
-            },
-            next: {
-              page: this.paging.currentPage + 1,
-              href: 'href=#news_event/page/' + (this.paging.currentPage + 1)
-            }
-          });
-        }
-      }
+      //========================================================================
 
     }
-  })
-
-  var newsEventDetailView = Backbone.View.extend({
-    templateString: "",
-    initialize: function(opts) {
-      this.listenTo(this.model, "change", this.render);
-      this.getTemplate();
-      this.data = {};
-    },
-    template: "template-newsEventDetail-mainview",
-    getTemplate: function() {
-      this.templateString = $("#" + this.template).text().trim();
-    },
-    render: function() {
-      this.data.news = this.model.attributes;
-      this.data.tags = jung.posts.getTag();
-      this.$el.html(Mustache.render(this.templateString, this.data));
-      var el = $('#news-righ-aside', this.el).html('');
-      var RightView = new newsRightAside({
-        el: el,
-        parentView: this,
-        collection: jung.postCat
-      })
-      RightView.render();
-      this.initView();
-    },
-    initView: function() {
-      $('.carousel').carousel({
-        interval: 2000
-      })
-    }
-  })
-
-  var contactView = Backbone.View.extend({
-    templateString: "",
-    initialize: function(opts) {
-      this.data = {};
-      this.getTemplate();
-    },
-    template: "template-contact-mainview",
-    getTemplate: function() {
-      this.templateString = $("#" + this.template).text().trim();
-    },
-    render: function() {
-
-      this.$el.html(Mustache.render(this.templateString, this.data));
-      $('h1.page-header').html('Dashboard')
-    }
-  })
+  });
 
   var postsView = Backbone.View.extend({
     templateString: "",
@@ -277,6 +81,9 @@
     template: "template-posts-admin",
     getTemplate: function() {
       this.templateString = $("#" + this.template).text().trim();
+    },
+    events: {
+      'click [data-action="delete"]': "onDeletePost"
     },
     render: function() {
       this.data.posts = this.collection.filter(function(m) {
@@ -308,6 +115,15 @@
       this.$el.html(Mustache.render(this.templateString, this.data));
       $('#dataTables-example').dataTable();
       $('h1.page-header').html('Quản Lý Bài Viết');
+    },
+    onDeletePost: function(ev){
+      var $el = $(ev.currentTarget),
+              id = $el.data('id');
+      var r = confirm ("Are you sure?");
+      if(r)
+        jung.posts.get(id).destroy();
+      else 
+        return false;
     }
   })
 
@@ -324,6 +140,9 @@
     template: "template-gallery-admin",
     getTemplate: function() {
       this.templateString = $("#" + this.template).text().trim();
+    },
+    events: {
+      'click [data-action="delete"]': "onDeletePost"
     },
     render: function() {
       this.data.posts = this.collection.filter(function(m) {
@@ -355,6 +174,15 @@
       this.$el.html(Mustache.render(this.templateString, this.data));
       $('#dataTables-example').dataTable();
       $('h1.page-header').html('Quản Lý Gallery');
+    },
+    onDeletePost: function(ev){
+      var $el = $(ev.currentTarget),
+              id = $el.data('id');
+      var r = confirm ("Are you sure?");
+      if(r)
+        jung.posts.get(id).destroy();
+      else 
+        return false;
     }
   })
 
@@ -413,7 +241,7 @@
       "change [name='image']": "onUpload",
       "change [name='post_type_id']": "onPostTypeChange",
       "change [name='highlight']": "inputChange",
-      "click [name=save_post]": "onSavePost"
+      "click [name=save_post]": "onSavePost",
     },
     onSavePost: function(ev) {
       var onSaveSuccess = function() {
@@ -484,16 +312,17 @@
       CKEDITOR.instances.post_content_en.on('blur', this.ckeditorChange.bind(this));
       CKEDITOR.instances.post_content_vi.on('blur', this.ckeditorChange.bind(this));
     }
-  })
+  });
+  
   var galleryDetail = Backbone.View.extend({
     templateString: "",
     initialize: function() {
-
+      this.views = {};
       this.data = {};
       this.uploader = new jung.util.AfUploader();
 //      this.listenTo(this.model, "change add remove sync", this.render);
       this.listenToOnce(this.model, "change", this.render);
-      this.listenTo(this.collection, 'add remove', this.render)
+//      this.listenTo(this.collection, 'add remove', this.render)
       this.getTemplate();
     },
     template: "template-galleryDetail-admin",
@@ -532,7 +361,7 @@
       this.data.postCats = jung.postCat.filter(function(m) {
         return m.get('post_type_id') == post_type;
       });
-      this.data.postDetail = this.collection.models;
+//      this.data.postDetail = this.collection.models;
       this.$el.html(Mustache.render(this.templateString, this.data));
       this.initPage();
     },
@@ -543,25 +372,10 @@
       "change [name='post_type_id']": "onPostTypeChange",
       "change [name='highlight']": "inputChange",
       "click [name=save_post]": "onSavePost",
-      "click .add-image": "addImage"
-    },
-    addImage: function(ev){
-      var gallery_details = new (this.collection.model),
-        cid = gallery_details.cid;
-      var html = '<div>' +
-                    '<label>Url </label>' +
-                    '<input class="form-control" data-idDetail="'+cid+'" vaue="" name="" placeholder="http://">' +
-                    '<label>Mô Tả</label>' + 
-                    '<textarea name="" data-idDetail="'+cid+'" class="form-control" rows="3"></textarea>' + 
-                    '<hr>' +
-                    '</div>';
-      // $('.image-sections', this.$el).append(html);
-      this.collection.add(gallery_details);
-
     },
     onSavePost: function(ev) {
       var onSaveSuccess = function() {
-        jung.nav.router.navigate("posts", {trigger: true});
+        jung.nav.router.navigate("gallery", {trigger: true});
       };
       this.model.save(null, {success: _.bind(onSaveSuccess, this)});
     },
@@ -601,9 +415,11 @@
       var $el = $(ev.currentTarget),
               name = $el.attr("name"),
               value = $el.val(),
-              cidDetail = $el.data('idDetail');
-      if(cidDetail)
-        this.collection.get(cidDetail);
+              cidDetail = $el.data('iddetail');
+      if(cidDetail){
+        var image = this.collection.get(cidDetail);
+        image.set(name, value);
+      }
       else
         this.model.set(name, value);
 
@@ -623,7 +439,52 @@
     },
     initPage: function() {
       $('h1.page-header').html('Thêm/Sửa Hình Ảnh');
+      var detailEL = $("#gallery_image", this.$el),
+              detailView = new imageDetailView({
+                el: detailEL,
+                collection: this.model.get("postDetails")
+              });
+              detailView.render();
+      this.views['detailView'] = detailView;      
     }
+  });
+  
+  var imageDetailView = Backbone.View.extend({
+    templateString: "",
+    initialize: function() {
+      this.data = {};
+      this.listenTo(this.collection, "sync sort add remove", this.render);
+      this.getTemplate();
+    },
+    template: "template-galleryImageDetail-admin",
+    getTemplate: function() {
+      this.templateString = $("#" + this.template).text().trim();
+    },
+    render: function(){
+      this.data.images = this.collection.models
+      this.$el.html(Mustache.render(this.templateString, this.data));
+    },
+    events: {
+      "click .add-image": "addImage"
+    },
+    addImage: function(ev){
+      var gallery_details = new (this.collection.model)({
+        url: 'http://',
+        file_name: null,
+        description_vi: 'Enter Description',
+        description_en: 'Enter Description'
+      }),
+        cid = gallery_details.cid;
+//      var html = '<div class="image-detail">' +
+//                    '<label>Url </label>' +
+//                    '<input class="form-control" vaue="" name="" placeholder="http://">' +
+//                    '<label>Mô Tả</label>' + 
+//                    '<textarea name="" class="form-control" rows="3"></textarea>' + 
+//                    '<hr>' +
+//                    '</div>';
+//       $('.image-sections', this.$el).append(html);
+      this.collection.add(gallery_details);
+    },
   })
 
 
@@ -634,7 +495,18 @@
       "posts/:value": "postDetail",
       "posts-create": "createPost",
       "gallery": "gallery",
-      "gallery-create": "createGallery"
+      "gallery-create": "createGallery",
+      "gallery/:value": "showGalleryDetail",
+      "block-wiget": "blockWiget"
+    },
+    blockWiget: function(){
+      var root = $("#admin-content").html(''),
+              el = $("<div />").appendTo(root).get(0),
+              view = new blockWigetView({
+                el: el
+              });
+
+      view.render();
     },
     dashboard: function() {
       var root = $("#admin-content").html(''),
@@ -674,7 +546,29 @@
                   model: model
                 });
         jung.postCat.fetch().done(function() {
-          model.fetch();
+          model.fetch().done(function(){
+            view.render();
+          });
+        });
+
+      });
+    },
+    showGalleryDetail: function(id){
+      var root = $("#admin-content").html(''),
+              el = $("<div />").appendTo(root).get(0),
+              model, view, collection;
+      jung.posts.fetch().done(function() {
+        model = jung.posts.get(id),
+        collection = model.get('postDetails');
+        var view = new galleryDetail({
+                  el: el,
+                  model: model,
+                  collection: collection
+                });
+        jung.postCat.fetch().done(function() {
+          model.fetch().done(function(){
+            view.render();
+          });
         });
 
       });
@@ -698,7 +592,7 @@
     createGallery: function() {
       var root = $("#admin-content").html(''),
               el = $("<div />").appendTo(root).get(0),
-              model, view;
+              model, view, collection;
       jung.posts.fetch().done(function() {
         model = new jung.models.post(),
         collection = model.get('postDetails');
