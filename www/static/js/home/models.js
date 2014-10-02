@@ -54,7 +54,13 @@
   var postCatModel = Backbone.Model.extend({
 //    urlRoot: jung.getUrl("/api/jungdokwan/posts")
   });
+  var block_wigetModel = Backbone.Model.extend({
 
+  });
+  var block_wigetCollection = Backbone.Collection.extend({
+    model: block_wigetModel,
+    url: jung.getUrl('/api/block_wiget'),
+  });
   var postCollection = Backbone.Collection.extend({
     model: postModel,
     url: jung.getUrl("/api/jungdokwan"),
@@ -146,25 +152,35 @@
     model: postCatModel,
     url: jung.getUrl("/api/jungdokwan/postCat"),
   });
-
+  
+  var postTypeModel = Backbone.Model.extend();
+  var postTypeCollection = Backbone.Collection.extend({
+    model: postTypeModel,
+    url: jung.getUrl('/api/post_type')
+  });
+  
   var coachModel = Backbone.Model.extend();
 
   var coachCollection = Backbone.Collection.extend({
     model: coachModel,
     url: jung.getUrl('/api/jungdokwan/coach')
-  })
+  });
 
   $.extend(jung, {
     models: {
       pageSetting: new pageSettingModel(),
       post: postModel,
       postCat: postCatModel,
-      coach: coachModel
+      coach: coachModel,
+      block_wiget: block_wigetModel,
+      post_type: postTypeModel
     },
     filesCollection: filesCollection,
     posts: new postCollection(),
     postCat: new postCatCollection(),
-    coachs: new coachCollection()
+    coachs: new coachCollection(),
+    block_wiget: new block_wigetCollection(),
+    post_type: new postTypeCollection()
   });
 
 })(window.jung);

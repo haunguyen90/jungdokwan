@@ -540,79 +540,65 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                Block Wiget
+                Danh Sách BLOCK-WIGET
             </div>
+            <!-- /.panel-heading -->
             <div class="panel-body">
-                <div class="row">
-                    <div class="col-lg-8">
-                        <form role="form">
-                            
-                            <div class="form-group">
-                                <label>Tiêu Đề </label>
-                                <input class="form-control" data-dom="input-text" value="" name="post_title_vi" placeholder="Tiêu Đề tiếng Việt ">
-                            </div>
-                            <div class="form-group">
-                                <label>Title </label>
-                                <input class="form-control" data-dom="input-text" value="" name="post_title_en" placeholder="Title ">
-                            </div>
-                            <div class="form-group">
-                                <label>Mô Tả  </label>
-                                <input class="form-control" data-dom="input-text" value="" name="description_vi" placeholder="Mô Tả tiếng Việt ">
-                            </div>
-                            <div class="form-group">
-                                <label>Description </label>
-                                <input class="form-control" data-dom="input-text" vaue="" name="description_en" placeholder="Description">
-                            </div>
-
-                                    <div class="form-group">
-                                           <label for="basic2" class="col-lg-2 control-label">hihi</label>
-
-                                            <div class="col-lg-10">
-                                              <select id="basic2" class="show-tick form-control" multiple>
-                                                <option>cow</option>
-                                                <option>bull</option>
-                                                <option class="get-class" disabled>ox</option>
-                                                <optgroup label="test" data-subtext="another test">
-                                                  <option>ASD</option>
-                                                  <option selected>Bla</option>
-                                                  <option>Ble</option>
-                                                </optgroup>
-                                              </select>
-                                            </div>
-                
-                
-                         
+                <div class="table-responsive">
+                   <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                        <thead>
+                            <tr>
+                                <th>id</th>
+                                <th>name</th>
+                                <th>description</th>
+                                <th>url</th>
+                                <th>edit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          {{#Blocks}}
+                          {{#attributes}}
+                            <tr class="odd gradeX" data-id="{{id}}">
+                                <td>{{id}}</td>
+                                <td>
+                                  <span class="block_name_{{id}}">{{name}}</span>
+                                  <input type="text" id="input_name_{{id}}" style="display: none"/>
+                                </td>
+                                <td>
+                                  <span class="block_description_{{id}}">{{description}}</span>
+                                  <input type="text" id="input_description_{{id}}" style="display: none"/>
+                                </td>
+                                <td>
+                                  <span id="url_block_{{id}}">{{url}}</span>
+                                  <div class="col-xs-2" id="select_url_block_{{id}}" style="display: none">
+                                      <select class="selectUrlBlock" class="show-tick form-control" multiple>
+                                        {{#listPost}}
+                                        
+                                        <optgroup label="a">
+                                          <option>ASD</option>
+                                          <option selected>Bla</option>
+                                          <option>Ble</option>
+                                        </optgroup>
+                                        
+                                        {{/listPost}}
+                                      </select>
+                                    </div>
+                                </td>
+                                <td>
+                                  <span class="glyphicon glyphicon-pencil cu-hand action-button edit-block-wiget" data-id="{{id}}"></span>
+                                  <span class="edit_button_{{id}}" data-id="{{id}}" style="display: none">
+                                    <a class="glyphicon glyphicon-ok cu-hand save-block" title="save"></a>
+                                    <a class="glyphicon glyphicon-remove cu-hand cancel-block" title="cancel"></a>
+                                  </span>
+                                </td>
+                            </tr>
+                            {{/attributes}}
+                            {{/Blocks}}
+                        </tbody>
+                    </table>
                 </div>
-                            
-<!--                            Select property of post ---------------------------->
-                            <div class="form-group">
-                                <label>Categories</label>
-                                <select name="post_categories" class="form-control">
-                                    <option value="none">---Select---</option>
-                                  
-                                    <option ></option>
-                                  
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Nổi Bật </label>
-                                <label class="radio-inline">
-                                    <input type="radio" name="highlight" id="highlight1" value="1" checked>Yes 
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="radio" name="highlight" id="highlight2" value="0">No 
-                                </label>
-                                
-                            </div>
-                            
-                            <button type="button" name="save_post" class="btn btn-default">Submit Button</button>
-                            <button type="reset" class="btn btn-default">Reset Button</button>
-                            
-                        </form>
-                    </div>
-                    
-                </div>
-                <!-- /.row (nested) -->
+                <!-- /.table-responsive -->
+                
             </div>
             <!-- /.panel-body -->
         </div>

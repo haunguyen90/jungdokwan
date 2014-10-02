@@ -47,18 +47,78 @@
   var blockWigetView = Backbone.View.extend({
     templateString: "",
     initialize: function() {
+      this.data = {};
       this._views = {};
       this.getTemplate();
+      this.listenTo(this.collection, "change sync", this.render);
     },
     template: "template-blockWiget-admin",
     getTemplate: function() {
       this.templateString = $("#" + this.template).text().trim();
     },
+    events: {
+      'click .edit-block-wiget': "onEditBlock",
+      'click .cancel-block': "onCancelBlock"
+    },
+    onEditBlock: function(ev){
+      var $el = $(ev.currentTarget),
+              id = $el.data('id');
+      this.changeBlockView(id,'edit');
+    },
+    onCancelBlock: function(ev){
+      var $el = $(ev.currentTarget),
+              id = $el.parent().data('id');
+      this.changeBlockView(id,'cancel');
+    },
+    changeBlockView: function(id,type){
+      if(type == 'edit'){
+        $('.block_name_' + id).hide();
+        $('#input_name_' + id).show();
+        $('.block_description_' + id).hide();
+        $('#input_description_' + id).show();
+        $('.edit-block-wiget[data-id="' + id + '"]').hide();
+        $('.edit_button_' + id).show();
+        $('#url_block_' + id).hide();
+        $('#select_url_block_' + id).show();
+      }else{
+        $('.block_name_' + id).show();
+        $('#input_name_' + id).hide();
+        $('.block_description_' + id).show();
+        $('#input_description_' + id).hide();
+        $('.edit-block-wiget[data-id="' + id + '"]').show();
+        $('.edit_button_' + id).hide();
+        $('#url_block_' + id).show();
+        $('#select_url_block_' + id).hide();
+      }
+    },
+    renderListPost: function(){
+      var list = {};
+      if(jung.posts.length > 0){
+        for(var x in jung.posts.models){
+          if(list[jung.posts.models[x].attributes.post_type_id])
+            list[jung.posts.models[x].attributes.post_type_id].push(jung.posts.models[x].attributes)
+          else
+            list[jung.posts.models[x].attributes.post_type_id] = new Array(jung.posts.models[x].attributes)
+        }
+      }
+      return list;
+    },
     render: function() {
 //==============================================================================
-
-      this.$el.html(Mustache.render(this.templateString));
-       var $basic2 = $('#basic2').selectpicker({
+      this.data.Blocks = this.collection.models;
+      
+      this.$el.html(Mustache.render(this.templateString, this.data));
+      var list = this.renderListPost();
+      var html = '';
+      for(var x in list){
+        html += '<optgroup label="' + jung.post_type.get(x).get('name_vi') + '">';
+        for(var y in list[x]){
+          html += '<option style="width: 50px" value="' + list[x][y].id + '">' + list[x][y].post_title_vi + '</option>';
+        }
+        html += '</optgroup>';
+      }
+      $('.selectUrlBlock').html(html)
+       var $selectBlock = $('.selectUrlBlock').selectpicker({
         liveSearch: true,
         maxOptions: 1
       });
@@ -503,10 +563,12 @@
       var root = $("#admin-content").html(''),
               el = $("<div />").appendTo(root).get(0),
               view = new blockWigetView({
-                el: el
+                el: el,
+                collection: jung.block_wiget
               });
-
-      view.render();
+      jung.posts.fetch().done(function(){
+        jung.block_wiget.fetch();
+      });      
     },
     dashboard: function() {
       var root = $("#admin-content").html(''),
