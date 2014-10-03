@@ -1,23 +1,46 @@
 <script id="template-galleyDetail-mainview" type="text/html">
-    {literal}
-<div class="main container album_detail">
+  {literal}
+  <div class="main container album_detail">
     <div class="album">
-        <h3 class="title"><span>ALBUM DETAILS </span></h3>
-        <div class="masonry-gutter">
-            <div id="masonry-bottom-spaced" class="isotope js-isotope" data-isotope-options='{ "masonry": { "columnWidth": 50, "gutter": 0 } }'>
-            {{#details}}
-            {{#attributes}}
-                <div class="mini-item">
-                    <a class="fancybox" rel="gallery1" href="/static/media/images/{{file_name}}" title="{{description_vi}}">
-                        <img src="/static/media/images/{{file_name}}" alt="Image 1" />
-                    </a>
-                </div>
-        {{/attributes}}
-            {{/details}}
-            </div>
-        </div><!--End gallery-->
-        <div class=""><a href="#" class="btn btn_more">More</a></div>
+      <h3 class="title"><span>ALBUM DETAILS </span></h3>
+      <div class="masonry-gutter">
+        <div id="masonry-bottom-spaced" class="isotope js-isotope" data-isotope-options='{ "masonry": { "columnWidth": 50, "gutter": 0 } }'>
+          {{#details}}
+          {{#attributes}}
+          <div class="mini-item">
+            <a class="fancybox" rel="gallery1" href="/static/media/images/{{file_name}}" title="{{description_vi}}">
+              <img src="/static/media/images/{{file_name}}" alt="Image 1" />
+            </a>
+          </div>
+          {{/attributes}}
+          {{/details}}
+        </div>
+      </div><!--End gallery-->
+      <div class=""><a href="#" class="btn btn_more">More</a></div>
     </div><!--End album-->
-</div><!--end main-->
-{/literal}
+  </div><!--end main-->
+  {/literal}
+</script>
+
+<script id="template-videoDetail-mainview" type="text/html">
+  {literal}
+  <div class="main container album_detail">
+    <div class="album">
+      <h3 class="title"><span>VIDEO DETAILS </span></h3>
+      <div class="masonry-gutter">
+        <div id="masonry-bottom-spaced" class="isotope js-isotope" data-isotope-options='{ "masonry": { "columnWidth": 50, "gutter": 0 } }'>
+          {{#details}}
+          {{#attributes}}
+          <div class="mini-item">
+            <iframe width="560" height="315" src="//{{url}}" frameborder="0" allowfullscreen></iframe>
+            <p>{{description_vi}}</p>
+          </div>
+          {{/attributes}}
+          {{/details}}
+        </div>
+      </div><!--End gallery-->
+      <div class=""><a href="#" class="btn btn_more">More</a></div>
+    </div><!--End album-->
+  </div><!--end main-->
+  {/literal}
 </script>

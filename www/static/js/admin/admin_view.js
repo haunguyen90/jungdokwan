@@ -3,7 +3,7 @@
     if (collection.fetch)
       collection.fetch();
   })
-  
+
 
   function formatField(value, formatArgs) {
     var args = formatArgs.split(":"),
@@ -43,7 +43,7 @@
       return model.get('post_type_id') == 2 && model.get('highlight') == 1;
     }
   });
-  
+
   var blockWigetView = Backbone.View.extend({
     templateString: "",
     initialize: function() {
@@ -61,44 +61,44 @@
       'click .cancel-block': "onCancelBlock",
       'click .save-block': "onSaveBlock"
     },
-    onSaveBlock: function(ev){
+    onSaveBlock: function(ev) {
       var $el = $(ev.currentTarget),
               id = $el.parent().data('id');
       var name = $('#input_name_' + id).val();
       var description = $('#input_description_' + id).val();
       var url = $('#select_url_block_' + id + ' .selectUrlBlock').val();
-      if(name.trim() == ''){
-          alert('vui lòng điền tên của block');
-          return false;
+      if (name.trim() == '') {
+        alert('vui lòng điền tên của block');
+        return false;
       }
-      if(!url){
-          alert('vui lòng chọn link đính kèm');
-          return false;
+      if (!url) {
+        alert('vui lòng chọn link đính kèm');
+        return false;
       }
       $.ajax({
-          type: 'POST',
-          url: config.base + '/api/block_wiget/saveBlock',
-          data: {id: id, name: name,description: description, url: url[0]},
-          dataType: 'json',
-          success: function(result){
-              console.log(result)
+        type: 'POST',
+        url: config.base + '/api/block_wiget/saveBlock',
+        data: {id: id, name: name, description: description, url: url[0]},
+        dataType: 'json',
+        success: function(result) {
+          console.log(result)
 //              this.onCancelBlock(id)
-              jung.block_wiget.fetch();
-          }
+          jung.block_wiget.fetch();
+        }
       })
     },
-    onEditBlock: function(ev){
+    onEditBlock: function(ev) {
       var $el = $(ev.currentTarget),
               id = $el.data('id');
-      this.changeBlockView(id,'edit');
+      this.changeBlockView(id, 'edit');
     },
-    onCancelBlock: function(ev){
+    onCancelBlock: function(ev) {
       var $el = $(ev.currentTarget),
               id = $el.parent().data('id');
-      this.changeBlockView(id,'cancel');
+      this.changeBlockView(id, 'cancel');
     },
-    changeBlockView: function(id,type){
-      if(type == 'edit'){
+    changeBlockView: function(id, type) {
+      if (type == 'edit') {
         $('.block_name_' + id).hide();
         $('#input_name_' + id).show();
         $('.block_description_' + id).hide();
@@ -107,7 +107,7 @@
         $('.edit_button_' + id).show();
         $('#url_block_' + id).hide();
         $('#select_url_block_' + id).show();
-      }else{
+      } else {
         $('.block_name_' + id).show();
         $('#input_name_' + id).hide();
         $('.block_description_' + id).show();
@@ -118,11 +118,11 @@
         $('#select_url_block_' + id).hide();
       }
     },
-    renderListPost: function(){
+    renderListPost: function() {
       var list = {};
-      if(jung.posts.length > 0){
-        for(var x in jung.posts.models){
-          if(list[jung.posts.models[x].attributes.post_type_id])
+      if (jung.posts.length > 0) {
+        for (var x in jung.posts.models) {
+          if (list[jung.posts.models[x].attributes.post_type_id])
             list[jung.posts.models[x].attributes.post_type_id].push(jung.posts.models[x].attributes)
           else
             list[jung.posts.models[x].attributes.post_type_id] = new Array(jung.posts.models[x].attributes)
@@ -133,19 +133,19 @@
     render: function() {
 //==============================================================================
       this.data.Blocks = this.collection.models;
-      
+
       this.$el.html(Mustache.render(this.templateString, this.data));
       var list = this.renderListPost();
       var html = '';
-      for(var x in list){
+      for (var x in list) {
         html += '<optgroup label="' + jung.post_type.get(x).get('name_vi') + '">';
-        for(var y in list[x]){
+        for (var y in list[x]) {
           html += '<option style="width: 50px" value="' + list[x][y].id + '">' + list[x][y].post_title_vi + '</option>';
         }
         html += '</optgroup>';
       }
       $('.selectUrlBlock').html(html)
-       var $selectBlock = $('.selectUrlBlock').selectpicker({
+      var $selectBlock = $('.selectUrlBlock').selectpicker({
         liveSearch: true,
         maxOptions: 1
       });
@@ -203,13 +203,13 @@
       $('#dataTables-example').dataTable();
       $('h1.page-header').html('Quản Lý Bài Viết');
     },
-    onDeletePost: function(ev){
+    onDeletePost: function(ev) {
       var $el = $(ev.currentTarget),
               id = $el.data('id');
-      var r = confirm ("Are you sure?");
-      if(r)
+      var r = confirm("Are you sure?");
+      if (r)
         jung.posts.get(id).destroy();
-      else 
+      else
         return false;
     }
   })
@@ -262,17 +262,75 @@
       $('#dataTables-example').dataTable();
       $('h1.page-header').html('Quản Lý Gallery');
     },
-    onDeletePost: function(ev){
+    onDeletePost: function(ev) {
       var $el = $(ev.currentTarget),
               id = $el.data('id');
-      var r = confirm ("Are you sure?");
-      if(r)
+      var r = confirm("Are you sure?");
+      if (r)
         jung.posts.get(id).destroy();
-      else 
+      else
         return false;
     }
   })
+  var videoView = Backbone.View.extend({
+    templateString: "",
+    initialize: function(opts) {
 
+      this.data = {};
+
+      this.listenTo(this.collection, "change sync add destroy", this.render);
+
+      this.getTemplate();
+    },
+    template: "template-gallery-admin",
+    getTemplate: function() {
+      this.templateString = $("#" + this.template).text().trim();
+    },
+    events: {
+      'click [data-action="delete"]': "onDeletePost"
+    },
+    render: function() {
+      this.data.posts = this.collection.filter(function(m) {
+        return m.get('post_type_id') == 4
+      });
+      this.data.postFunction = {
+        renderType: function() {
+          return function(text, render) {
+            if (render(text).trim() == '1')
+              return render('Course')
+            else if (render(text).trim() == '2')
+              return render('News & Event')
+            else if (render(text).trim() == '3')
+              return render('Images')
+            else if (render(text).trim() == '4')
+              return render('Video')
+            else
+              return render('undefined')
+          }
+        },
+        renderContent: function() {
+          return function(text, render) {
+            var content = render(text).substring(0, 250);
+            return content + '...'
+          }
+        }
+      }
+
+      this.$el.html(Mustache.render(this.templateString, this.data));
+      $('#dataTables-example').dataTable();
+      $('h1.page-header').html('Quản Lý Gallery');
+      $('.btn_create_view').prop('href','#video-create');
+    },
+    onDeletePost: function(ev) {
+      var $el = $(ev.currentTarget),
+              id = $el.data('id');
+      var r = confirm("Are you sure?");
+      if (r)
+        jung.posts.get(id).destroy();
+      else
+        return false;
+    }
+  })
   var postViewDetail = Backbone.View.extend({
     templateString: "",
     initialize: function() {
@@ -400,7 +458,7 @@
       CKEDITOR.instances.post_content_vi.on('blur', this.ckeditorChange.bind(this));
     }
   });
-  
+
   var galleryDetail = Backbone.View.extend({
     templateString: "",
     initialize: function() {
@@ -503,7 +561,7 @@
               name = $el.attr("name"),
               value = $el.val(),
               cidDetail = $el.data('iddetail');
-      if(cidDetail){
+      if (cidDetail) {
         var image = this.collection.get(cidDetail);
         image.set(name, value);
       }
@@ -531,11 +589,11 @@
                 el: detailEL,
                 collection: this.model.get("postDetails")
               });
-              detailView.render();
-      this.views['detailView'] = detailView;      
+      detailView.render();
+      this.views['detailView'] = detailView;
     }
   });
-  
+
   var imageDetailView = Backbone.View.extend({
     templateString: "",
     initialize: function() {
@@ -547,21 +605,30 @@
     getTemplate: function() {
       this.templateString = $("#" + this.template).text().trim();
     },
-    render: function(){
+    render: function() {
       this.data.images = this.collection.models
       this.$el.html(Mustache.render(this.templateString, this.data));
     },
     events: {
-      "click .add-image": "addImage"
+      "click .add-image": "addImage",
+      "click .delete-image": "deleteImage"
     },
-    addImage: function(ev){
+    deleteImage: function(ev) {
+      var $el = $(ev.currentTarget),
+              id = $el.data("detail");
+      if (confirm('Bạn chắc chứ?')) {
+        this.collection.remove(id);
+      }
+
+    },
+    addImage: function(ev) {
       var gallery_details = new (this.collection.model)({
         url: 'http://',
         file_name: null,
         description_vi: 'Enter Description',
         description_en: 'Enter Description'
       }),
-        cid = gallery_details.cid;
+              cid = gallery_details.cid;
 //      var html = '<div class="image-detail">' +
 //                    '<label>Url </label>' +
 //                    '<input class="form-control" vaue="" name="" placeholder="http://">' +
@@ -576,6 +643,7 @@
 
 
   var JungRouter = Backbone.Router.extend({
+    history: [],
     routes: {
       "": "dashboard",
       "posts": "posts",
@@ -583,19 +651,42 @@
       "posts-create": "createPost",
       "gallery": "gallery",
       "gallery-create": "createGallery",
+      "video-create": "createGallery",      
       "gallery/:value": "showGalleryDetail",
-      "block-wiget": "blockWiget"
+      "block-wiget": "blockWiget",
+      "video": "video"
     },
-    blockWiget: function(){
+    initialize: function(options) {
+
+      this.listenTo(this, 'route', function(name, args) {
+        jung.history.push({
+          name: name,
+          args: args,
+          fragment: Backbone.history.fragment
+        });
+
+      });
+    },
+    video: function() {
+
+      var root = $("#admin-content").html(''),
+              el = $("<div />").appendTo(root).get(0),
+              view = new videoView({
+                el: el,
+                collection: jung.posts
+              })
+      jung.posts.fetch();
+    },
+    blockWiget: function() {
       var root = $("#admin-content").html(''),
               el = $("<div />").appendTo(root).get(0),
               view = new blockWigetView({
                 el: el,
                 collection: jung.block_wiget
               });
-      jung.posts.fetch().done(function(){
+      jung.posts.fetch().done(function() {
         jung.block_wiget.fetch();
-      });      
+      });
     },
     dashboard: function() {
       var root = $("#admin-content").html(''),
@@ -635,27 +726,27 @@
                   model: model
                 });
         jung.postCat.fetch().done(function() {
-          model.fetch().done(function(){
+          model.fetch().done(function() {
             view.render();
           });
         });
 
       });
     },
-    showGalleryDetail: function(id){
+    showGalleryDetail: function(id) {
       var root = $("#admin-content").html(''),
               el = $("<div />").appendTo(root).get(0),
               model, view, collection;
       jung.posts.fetch().done(function() {
         model = jung.posts.get(id),
-        collection = model.get('postDetails');
+                collection = model.get('postDetails');
         var view = new galleryDetail({
-                  el: el,
-                  model: model,
-                  collection: collection
-                });
+          el: el,
+          model: model,
+          collection: collection
+        });
         jung.postCat.fetch().done(function() {
-          model.fetch().done(function(){
+          model.fetch().done(function() {
             view.render();
           });
         });
@@ -682,15 +773,19 @@
       var root = $("#admin-content").html(''),
               el = $("<div />").appendTo(root).get(0),
               model, view, collection;
+      if (Backbone.history.fragment == 'video-create')
+        var post_type = 4;
+      else
+        var post_type = 3;
       jung.posts.fetch().done(function() {
         model = new jung.models.post(),
-        collection = model.get('postDetails');
-        model.set('post_type_id', 3);
+                collection = model.get('postDetails');
+        model.set('post_type_id', post_type);
         var view = new galleryDetail({
-                  el: el,
-                  model: model,
-                  collection: collection
-                });
+          el: el,
+          model: model,
+          collection: collection
+        });
         jung.postCat.fetch().done(function() {
           view.render();
         });

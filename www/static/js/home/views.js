@@ -39,6 +39,7 @@
       this.data.highlightNews = this.collection.filter(this.getFilter(this.getHighlightNews));
       this.data.newestNews = this.collection.filter(this.getFilter(this.getHighlightNews))[0].attributes;
       this.data.newsCat = jung.postCat.models;
+      this.data.block_wiget = jung.block_wiget.models;
       this.data.coachs = [];
       for (var x = 0; x <= jung.coachs.length; x += 2) {
         if (!(x >= jung.coachs.length)) {
@@ -291,6 +292,9 @@
       this.data.album = jung.posts.filter(function(m) {
         return m.get('post_type_id') == 3
       });
+      this.data.video = jung.posts.filter(function(m) {
+        return m.get('post_type_id') == 4
+      });
 //      this.data.recentPosts = this.collection.getRecentPosts();
 //      this.data.tags = this.collection.getTag();
       this.$el.html(Mustache.render(this.templateString, this.data));
@@ -325,15 +329,37 @@
     },
     initPage: function(){
       $(document).ready(function() {
-			$(".fancybox").fancybox({
-				openEffect	: 'elastic',
-				closeEffect	: 'elastic',
-				nextEffect 	: 'fade',
-				prevEffect	: 'fade'
-
-			});
-		});
+          $(".fancybox").fancybox({
+            openEffect	: 'elastic',
+            closeEffect	: 'elastic',
+            nextEffect 	: 'fade',
+            prevEffect	: 'fade'
+          });
+      });
     }
+  })
+  
+  var videoViewDetail = Backbone.View.extend({
+    templateString: "",
+    initialize: function() {
+
+      this.data = {};
+
+      this.listenToOnce(this.model, "change add remove sync", this.render);
+
+      this.getTemplate();
+    },
+    template: "template-videoDetail-mainview",
+    getTemplate: function() {
+      this.templateString = $("#" + this.template).text().trim();
+    },
+    
+    render: function() {
+      this.data.details = this.model.get('postDetails').models;
+      this.$el.html(Mustache.render(this.templateString, this.data));
+    
+    },
+    
   })
 
 
@@ -349,6 +375,7 @@
       "post-detail/:value": "news_event_detail",
       "gallery": "gallery",
       "gallery/:value": "gallery_detail",
+      "video/:value": "video_detail",
       "contact": "contact"
     },
     home: function() {
@@ -404,6 +431,20 @@
       jung.posts.fetch().done(function() {
         model = jung.posts.get(id),
                 view = new galleryViewDetail({
+                  el: el,
+                  model: model
+                });
+        model.fetch();
+        view.render();
+      })
+    },
+    video_detail: function(id) {
+      var root = $("body #body_content").html(''),
+              el = $("<div />").appendTo(root).get(0),
+              model, view;
+      jung.posts.fetch().done(function() {
+        model = jung.posts.get(id),
+                view = new videoViewDetail({
                   el: el,
                   model: model
                 });
