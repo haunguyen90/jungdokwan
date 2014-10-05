@@ -61,7 +61,7 @@
       
     },
     onSavePostCat: function (){
-      if($('[name="post_title_vi"]').val().trim() == ''){
+      if($('[name="name_vi"]').val().trim() == ''){
           alert('vui lòng điền tên loại');
           return false;
       }
@@ -71,11 +71,12 @@
       }
       $.ajax({
         type: 'POST',
-        url: config.base + '',
+        url: config.base + '/api/post_category/createPostCat',
         data: $('.form_post_category').serialize(),
         dataType: 'json',
-        success: function(){
-            
+        success: function(result){
+            console.log(result);
+            jung.nav.router.navigate("post-category", {trigger: true});
         }
       })    
           
@@ -120,7 +121,7 @@
       this.data = {};
       this._views = {};
       this.getTemplate();
-      this.listenTo(this.collection, "change sync", this.render);
+      this.listenTo(this.collection, "change sync add destroy", this.render);
     },
     template: "template-postCategory-admin",
     getTemplate: function() {
@@ -129,7 +130,14 @@
     events: {
       'click .edit-postcat': "onEditPostCat",
       'click .cancel-postcat': "onCancelPostCat",
-      'click .save-postcat': "onSavePostCat"
+      'click .save-postcat': "onSavePostCat",
+      'click .delete-postcat': "onDeletePostCat"
+    },
+    onDeletePostCat: function(ev){
+      var $el = $(ev.currentTarget),
+              id = $el.parent().data('id');
+      if(confirm('are you sure?'))
+          this.collection.get(id).destroy();
     },
     onSavePostCat: function(ev){
       var $el = $(ev.currentTarget),
@@ -159,7 +167,7 @@
     },
     onEditPostCat: function(ev){
       var $el = $(ev.currentTarget),
-              id = $el.data('id');
+              id = $el.parent().data('id');
       this.changePostCatView(id,'edit');
     },
     onCancelPostCat: function(ev){
@@ -173,7 +181,7 @@
         $('#input_name_' + id).show();
         $('.postcat_description_' + id).hide();
         $('#input_description_' + id).show();
-        $('.edit-postcat[data-id="' + id + '"]').hide();
+        $('.sp-edit-postcat[data-id="' + id + '"]').hide();
         $('.edit_button_' + id).show();
         $('#url_postcat_' + id).hide();
         $('#select_url_postcat_' + id).show();
@@ -182,7 +190,7 @@
         $('#input_name_' + id).hide();
         $('.postcat_description_' + id).show();
         $('#input_description_' + id).hide();
-        $('.edit-postcat[data-id="' + id + '"]').show();
+        $('.sp-edit-postcat[data-id="' + id + '"]').show();
         $('.edit_button_' + id).hide();
         $('#url_postcat_' + id).show();
         $('#select_url_postcat_' + id).hide();
@@ -505,6 +513,7 @@
       $('#dataTables-example').dataTable();
       $('h1.page-header').html('Quản Lý Gallery');
       $('.btn_create_view').prop('href','#video-create');
+      $('.title_list_gallery').text('Danh sách VIDEO');
     },
     onDeletePost: function(ev) {
       var $el = $(ev.currentTarget),
@@ -705,7 +714,10 @@
     },
     onSavePost: function(ev) {
       var onSaveSuccess = function() {
-        jung.nav.router.navigate("gallery", {trigger: true});
+        if(Backbone.history.fragment == 'video-create')
+            jung.nav.router.navigate("video", {trigger: true});
+        else
+            jung.nav.router.navigate("gallery", {trigger: true});
       };
       this.model.save(null, {success: _.bind(onSaveSuccess, this)});
     },

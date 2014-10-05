@@ -628,7 +628,7 @@
                                 <th>name</th>
                                 <th>description</th>
                                 <th>url</th>
-                                <th>edit</th>
+                                <th>action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -653,7 +653,10 @@
                                     </div>
                                 </td>
                                 <td>
-                                  <span class="glyphicon glyphicon-pencil cu-hand action-button edit-postcat" data-id="{{id}}"></span>
+                                    <span class="button sp-edit-postcat" data-id="{{id}}">
+                                        <a class="glyphicon glyphicon-pencil cu-hand action-button edit-postcat" title="edit"></a>
+                                        <a class="glyphicon glyphicon-trash cu-hand action-button delete-postcat" title="delete"></a>
+                                    </span>
                                   <span class="edit_button_{{id}}" data-id="{{id}}" style="display: none">
                                     <a class="glyphicon glyphicon-ok cu-hand save-postcat" title="save"></a>
                                     <a class="glyphicon glyphicon-remove cu-hand cancel-postcat" title="cancel"></a>

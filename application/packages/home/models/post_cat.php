@@ -25,5 +25,9 @@ Class Post_cat extends MY_Model {
         $this->db->where('id', $id)
                  ->update($this->table_name, $data);
     }
+    public function insert($data){
+        $this->db->insert($this->table_name, $data);
+        return $this->db->insert_id();
+    }
 
 }
