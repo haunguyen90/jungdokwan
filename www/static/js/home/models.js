@@ -52,7 +52,7 @@
   });
 
   var postCatModel = Backbone.Model.extend({
-//    urlRoot: jung.getUrl("/api/jungdokwan/posts")
+    
   });
   var block_wigetModel = Backbone.Model.extend({
 

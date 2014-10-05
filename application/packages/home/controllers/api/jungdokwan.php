@@ -33,7 +33,15 @@ class Jungdokwan extends MY_Controller {
     $postCat = $this->post_cat->getPostCat();
     return $this->return_json($postCat);
   }
-
+  public function savePostCat(){
+      $data = $_POST;
+      $data['url'] = 'post-category/'.$data['url'];
+      $this->load->model('post_cat');
+      if($this->post_cat->update($data['id'],$data))
+        echo json_encode($data);
+      else
+        echo 'update not success';
+  }
   public function index() {
     if ($this->input->is_post()) {
       $this->index_post();
@@ -154,7 +162,7 @@ class Jungdokwan extends MY_Controller {
       }
     }
   }
-
+  
   private static function find_new_and_destroyed($in, $current, $check_for_changes = FALSE) {
     $get_id = function ($item) {
               return $item->id;

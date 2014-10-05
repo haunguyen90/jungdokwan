@@ -43,7 +43,120 @@
       return model.get('post_type_id') == 2 && model.get('highlight') == 1;
     }
   });
+<<<<<<< HEAD
 
+=======
+  var postCategoryView = Backbone.View.extend({
+    templateString: "",
+    initialize: function() {
+      this.data = {};
+      this._views = {};
+      this.getTemplate();
+      this.listenTo(this.collection, "change sync", this.render);
+    },
+    template: "template-postCategory-admin",
+    getTemplate: function() {
+      this.templateString = $("#" + this.template).text().trim();
+    },
+    events: {
+      'click .edit-postcat': "onEditPostCat",
+      'click .cancel-postcat': "onCancelPostCat",
+      'click .save-postcat': "onSavePostCat"
+    },
+    onSavePostCat: function(ev){
+      var $el = $(ev.currentTarget),
+              id = $el.parent().data('id');
+      var name = $('#input_name_' + id).val();
+      var description = $('#input_description_' + id).val();
+      var url = $('#select_url_postcat_' + id + ' .selectUrlPostCat').val();
+      if(name.trim() == ''){
+          alert('vui lòng điền tên của postcat');
+          return false;
+      }
+      if(!url){
+          alert('vui lòng chọn link đính kèm');
+          return false;
+      }
+      $.ajax({
+          type: 'POST',
+          url: config.base + '/api/post_category/savePostCat',
+          data: {id: id, name_vi: name,description: description, url: url[0]},
+          dataType: 'json',
+          success: function(result){
+              console.log(result)
+//              this.onCancelBlock(id)
+              jung.postCat.fetch();
+          }
+      })
+    },
+    onEditPostCat: function(ev){
+      var $el = $(ev.currentTarget),
+              id = $el.data('id');
+      this.changePostCatView(id,'edit');
+    },
+    onCancelPostCat: function(ev){
+      var $el = $(ev.currentTarget),
+              id = $el.parent().data('id');
+      this.changePostCatView(id,'cancel');
+    },
+    changePostCatView: function(id,type){
+      if(type == 'edit'){
+        $('.postcat_name_' + id).hide();
+        $('#input_name_' + id).show();
+        $('.postcat_description_' + id).hide();
+        $('#input_description_' + id).show();
+        $('.edit-postcat[data-id="' + id + '"]').hide();
+        $('.edit_button_' + id).show();
+        $('#url_postcat_' + id).hide();
+        $('#select_url_postcat_' + id).show();
+      }else{
+        $('.postcat_name_' + id).show();
+        $('#input_name_' + id).hide();
+        $('.postcat_description_' + id).show();
+        $('#input_description_' + id).hide();
+        $('.edit-postcat[data-id="' + id + '"]').show();
+        $('.edit_button_' + id).hide();
+        $('#url_postcat_' + id).show();
+        $('#select_url_postcat_' + id).hide();
+      }
+    },
+    renderListPost: function(){
+      var list = {};
+      if(jung.posts.length > 0){
+        for(var x in jung.posts.models){
+          if(list[jung.posts.models[x].attributes.post_type_id])
+            list[jung.posts.models[x].attributes.post_type_id].push(jung.posts.models[x].attributes)
+          else
+            list[jung.posts.models[x].attributes.post_type_id] = new Array(jung.posts.models[x].attributes)
+        }
+      }
+      return list;
+    },
+    render: function() {
+//==============================================================================
+      this.data.postcat = this.collection.models;
+      
+      this.$el.html(Mustache.render(this.templateString, this.data));
+      var list = this.renderListPost();
+      var html = '';
+      for(var x in list){
+        html += '<optgroup label="' + jung.post_type.get(x).get('name_vi') + '">';
+        for(var y in list[x]){
+          html += '<option style="width: 50px" value="' + list[x][y].id + '">' + list[x][y].post_title_vi + '</option>';
+        }
+        html += '</optgroup>';
+      }
+      $('.selectUrlPostCat').html(html)
+       var $selectBlock = $('.selectUrlPostCat').selectpicker({
+        liveSearch: true,
+        maxOptions: 1
+      });
+
+      //========================================================================
+
+    }
+  });
+>>>>>>> finish edit post category
   var blockWigetView = Backbone.View.extend({
     templateString: "",
     initialize: function() {
@@ -654,7 +767,22 @@
       "video-create": "createGallery",      
       "gallery/:value": "showGalleryDetail",
       "block-wiget": "blockWiget",
+<<<<<<< HEAD
       "video": "video"
+=======
+      "post-category": "postCategory"
+    },
+    postCategory: function(){
+      var root = $("#admin-content").html(''),
+              el = $("<div />").appendTo(root).get(0),
+              view = new postCategoryView({
+                el: el,
+                collection: jung.postCat
+              });
+      jung.posts.fetch().done(function(){
+        jung.postCat.fetch();
+      });      
+>>>>>>> finish edit post category
     },
     initialize: function(options) {
 
