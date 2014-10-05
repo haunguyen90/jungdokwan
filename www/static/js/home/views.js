@@ -131,6 +131,7 @@
     template: "template-newsEvent-mainview",
     getTemplate: function() {
       this.templateString = $("#" + this.template).text().trim();
+      
     },
     render: function() {
       this.setPagination(this.page);
@@ -147,6 +148,10 @@
         collection: jung.postCat
       })
       RightView.render();
+      if(this.type == 1)
+        $('.post_title').html('CHƯƠNG TRÌNH HỌC');
+      else if (this.type == 2)
+        $('.post_title').html('TIN TỨC & SỰ KIỆN');
     },
     events: {
       'click [data-action="detail"]': "showPostDetail"

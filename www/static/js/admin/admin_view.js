@@ -46,7 +46,6 @@
   var createPostCategoryView = Backbone.View.extend({
       templateString: "",
     initialize: function(opts) {
-
       this.data = {};
 
       this.listenTo(this.collection, "change sync add", this.render);
@@ -352,7 +351,8 @@
       this.templateString = $("#" + this.template).text().trim();
     },
     events: {
-      'click [data-action="delete"]': "onDeletePost"
+      'click [data-action="delete"]': "onDeletePost",
+      'click #addPost': 'onAddPost'
     },
     render: function() {
       this.data.posts = this.collection.filter(function(m) {
@@ -393,6 +393,9 @@
         jung.posts.get(id).destroy();
       else
         return false;
+    },
+    onAddPost: function(ev){
+      jung.nav.router.navigate("posts-create", {trigger: true});
     }
   })
 
