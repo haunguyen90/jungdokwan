@@ -43,9 +43,78 @@
       return model.get('post_type_id') == 2 && model.get('highlight') == 1;
     }
   });
-<<<<<<< HEAD
+  var createPostCategoryView = Backbone.View.extend({
+      templateString: "",
+    initialize: function(opts) {
 
-=======
+      this.data = {};
+
+      this.listenTo(this.collection, "change sync add", this.render);
+
+      this.getTemplate();
+    },
+    template: "template-create-post-category-admin",
+    getTemplate: function() {
+      this.templateString = $("#" + this.template).text().trim();
+    },
+    events: {
+      "click .save-post-category": "onSavePostCat",
+      
+    },
+    onSavePostCat: function (){
+      if($('[name="post_title_vi"]').val().trim() == ''){
+          alert('vui lòng điền tên loại');
+          return false;
+      }
+      if($('[name="post_type_id"]').val() == ''){
+        alert('vui chọn loại bài viết');
+        return false;
+      }
+      $.ajax({
+        type: 'POST',
+        url: config.base + '',
+        data: $('.form_post_category').serialize(),
+        dataType: 'json',
+        success: function(){
+            
+        }
+      })    
+          
+      console.log($('.form_post_category').serialize());  
+    },
+    renderListPost: function(){
+      var list = {};
+      if(jung.posts.length > 0){
+        for(var x in jung.posts.models){
+          if(list[jung.posts.models[x].attributes.post_type_id])
+            list[jung.posts.models[x].attributes.post_type_id].push(jung.posts.models[x].attributes)
+          else
+            list[jung.posts.models[x].attributes.post_type_id] = new Array(jung.posts.models[x].attributes)
+        }
+      }
+      return list;
+    },
+    render: function() {
+      this.data.posts = this.collection.models;
+      this.data.post_type = jung.post_type.models;
+      this.$el.html(Mustache.render(this.templateString, this.data));
+      var list = this.renderListPost();
+      var html = '';
+      for(var x in list){
+        html += '<optgroup label="' + jung.post_type.get(x).get('name_vi') + '">';
+        for(var y in list[x]){
+          html += '<option style="width: 50px" value="' + list[x][y].id + '">' + list[x][y].post_title_vi + '</option>';
+        }
+        html += '</optgroup>';
+      }
+      $('.selectUrlPostCat').html(html)
+       var $selectBlock = $('.selectUrlPostCat').selectpicker({
+        liveSearch: true,
+        maxOptions: 1
+      });
+    },
+    
+  })
   var postCategoryView = Backbone.View.extend({
     templateString: "",
     initialize: function() {
@@ -156,7 +225,7 @@
 
     }
   });
->>>>>>> finish edit post category
+
   var blockWigetView = Backbone.View.extend({
     templateString: "",
     initialize: function() {
@@ -767,10 +836,21 @@
       "video-create": "createGallery",      
       "gallery/:value": "showGalleryDetail",
       "block-wiget": "blockWiget",
-<<<<<<< HEAD
-      "video": "video"
-=======
+      "video": "video",
+      "create-post-category": 'createPostCategory',
       "post-category": "postCategory"
+    },
+    createPostCategory: function(){
+      var root = $("#admin-content").html(''),
+              el = $("<div />").appendTo(root).get(0),
+              view = new createPostCategoryView({
+                el: el,
+               collection: jung.postCat
+              });
+        jung.posts.fetch().done(function(){
+            jung.postCat.fetch();
+        })
+      
     },
     postCategory: function(){
       var root = $("#admin-content").html(''),
@@ -782,7 +862,7 @@
       jung.posts.fetch().done(function(){
         jung.postCat.fetch();
       });      
->>>>>>> finish edit post category
+
     },
     initialize: function(options) {
 

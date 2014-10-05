@@ -24,4 +24,8 @@ class Post_category extends MY_Controller {
       $this->post_cat->update($data['id'],$data);
       echo json_encode($data);
   }
+  public function createPostCat(){
+      $data = $_POST;
+      var_dump($data);die;
+  }
 }
