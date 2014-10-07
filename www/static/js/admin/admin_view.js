@@ -223,6 +223,7 @@
         html += '</optgroup>';
       }
       $('.selectUrlPostCat').html(html)
+      $('h1.page-header').html('Quản Lý POST CATEGORY');
        var $selectBlock = $('.selectUrlPostCat').selectpicker({
         liveSearch: true,
         maxOptions: 1
@@ -334,6 +335,7 @@
         html += '</optgroup>';
       }
       $('.selectUrlBlock').html(html)
+      $('h1.page-header').html('Quản Lý BLOCK-WIGET');
       var $selectBlock = $('.selectUrlBlock').selectpicker({
         liveSearch: true,
         maxOptions: 1
@@ -511,7 +513,7 @@
 
       this.$el.html(Mustache.render(this.templateString, this.data));
       $('#dataTables-example').dataTable();
-      $('h1.page-header').html('Quản Lý Gallery');
+      $('h1.page-header').html('Quản lý VIDEO');
       $('.btn_create_view').prop('href','#video-create');
       $('.title_list_gallery').text('Danh sách VIDEO');
     },

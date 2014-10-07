@@ -10,8 +10,8 @@ class Post_type extends MY_Controller {
     }
   }
   public function index_get(){
-    $this->load->model('post_type_model','block');
-    $list = $this->block->getArray();
+    $this->load->model('post_type_model','post_type');
+    $list = $this->post_type->getArray();
     return $this->return_json($list);
   }
 }

@@ -150,7 +150,7 @@
 
   var postCatCollection = Backbone.Collection.extend({
     model: postCatModel,
-    url: jung.getUrl("/api/jungdokwan/postCat"),
+    url: jung.getUrl("/api/post_category"),
   });
   
   var postTypeModel = Backbone.Model.extend();

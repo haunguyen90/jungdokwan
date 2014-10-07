@@ -14,7 +14,7 @@ class Post_category extends MY_Controller {
     }
   }
   public function index_get(){
-    $list = $this->block->getArray();
+    $list = $this->post_cat->getPostCat();
     return $this->return_json($list);
   }
   public function savePostCat(){
@@ -29,5 +29,14 @@ class Post_category extends MY_Controller {
       $data['url'] = "post-detail/".$data['url'];
       $id = $this->post_cat->insert($data);
       echo json_encode($id);
+  }
+  private function index_post() {
+    $object = $this->input->json();
+    return $this->get($id);
+  }
+  public function get($id){
+    if($this->input->is_delete()){
+      $this->post_cat->delete($id);
+    }
   }
 }
