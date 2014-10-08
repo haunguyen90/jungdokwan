@@ -13,7 +13,8 @@ class Home extends MY_Controller {
   
   public function index() {
     $data['pageSetting'] = $this->pageSetting;
-    
+//    echo "<pre>";
+//    var_dump($data['pageSetting']); die;
     $data['coachs'] = $this->coach->getAllCoach();
     $data['slide_show'] = $this->fetch('home/slide_show.html');
     $data['lang'] = $this->session->userdata('lang');

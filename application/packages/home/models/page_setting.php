@@ -19,10 +19,12 @@
           ->get()->result();
       $i = 0;
       foreach($menu as $row){
-        $menu[$i]->subMenu = $this->db
-                                ->from('sub_main_menu')
-                                ->where('main_menu_id', $row->id)
+        if($row->id == 3){
+          $menu[$i]->subMenu = $this->db
+                                ->from('post_categories')
+                                ->where('post_type_id', 1)
                                 ->get()->result();
+        }        
         $i++;
       }
       return $menu;

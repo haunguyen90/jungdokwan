@@ -38,7 +38,12 @@
 
       this.data.highlightNews = this.collection.filter(this.getFilter(this.getHighlightNews));
       this.data.newestNews = this.collection.filter(this.getFilter(this.getHighlightNews))[0].attributes;
-      this.data.newsCat = jung.postCat.models;
+      this.data.newsCat1 = jung.postCat.filter(function(m, index){
+        return index < (jung.postCat.length/2)
+      });
+      this.data.newsCat2 = jung.postCat.filter(function(m, index){
+        return index >= (jung.postCat.length/2)
+      });
       this.data.block_wiget = jung.block_wiget.models;
       this.data.coachs = [];
       for (var x = 0; x <= jung.coachs.length; x += 2) {
