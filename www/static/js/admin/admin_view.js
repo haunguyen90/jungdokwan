@@ -108,6 +108,7 @@
         html += '</optgroup>';
       }
       $('.selectUrlPostCat').html(html)
+      
        var $selectBlock = $('.selectUrlPostCat').selectpicker({
         liveSearch: true,
         maxOptions: 1
@@ -224,6 +225,7 @@
       }
       $('.selectUrlPostCat').html(html)
       $('h1.page-header').html('Quản Lý POST CATEGORY');
+      $('#dataTables-example').dataTable();
        var $selectBlock = $('.selectUrlPostCat').selectpicker({
         liveSearch: true,
         maxOptions: 1
